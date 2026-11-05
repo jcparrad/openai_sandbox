@@ -1,0 +1,8 @@
+[
+  {"id": "S1", "operacion": "sumar", "entrada": [2, 3], "esperado": 5},
+  {"id": "S2", "operacion": "sumar", "entrada": [-2, 2], "esperado": 0},
+  {"id": "P1", "operacion": "contar_palabras", "entrada": "hola laboratorio", "esperado": 2},
+  {"id": "P2", "operacion": "contar_palabras", "entrada": "", "esperado": 0},
+  {"id": "M1", "operacion": "mayusculas", "entrada": "agente", "esperado": "AGENTE"},
+  {"id": "M2", "operacion": "mayusculas", "entrada": "prueba 123", "esperado": "PRUEBA 123"}
+]

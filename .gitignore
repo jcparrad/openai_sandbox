@@ -1,0 +1,25 @@
+# Compilación y cachés
+presentation/build/
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+node_modules/
+
+# Configuración local, credenciales, resultados privados y sesiones
+.codex/
+.env
+.env.*
+!.env.example
+auth.json
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+private/
+evidence/
+logs/
+*.local.toml
+
+# Ignorar archivos no elimina secretos ya versionados. Revisar antes de publicar.

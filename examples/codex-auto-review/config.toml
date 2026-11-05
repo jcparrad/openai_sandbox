@@ -1,0 +1,80 @@
+# Ejemplo educativo personal para desarrollo y evaluación de agentes.
+# No es una política corporativa. No contiene credenciales ni destinos internos.
+# Este archivo NO está activo mientras permanezca en examples/.
+# Requiere un cliente compatible y que los requisitos administrados lo permitan.
+
+model_reasoning_effort = "medium"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+default_permissions = "agent-lab"
+
+# No combinar con sandbox_mode / sandbox_workspace_write en otras capas.
+# El proxy es necesario para que se apliquen los dominios del perfil.
+[features]
+network_proxy = true
+
+[permissions.agent-lab]
+description = "Desarrollo local y evaluaciones sintéticas con destinos públicos acotados."
+extends = ":workspace"
+
+[permissions.agent-lab.filesystem]
+":root" = "deny"
+":minimal" = "read"
+# La herencia conserva escritura en workspace y temporales y las protecciones
+# de .git, .agents, .codex y .aws. Herramientas fuera de :minimal pueden requerir
+# excepciones locales precisas (por ejemplo, una instalación de Python).
+
+[permissions.agent-lab.filesystem.":workspace_roots"]
+".env" = "deny"
+".env.local" = "deny"
+".env.production" = "deny"
+"secrets" = "deny"
+# No es una detección universal de secretos: hay que gestionar otros archivos
+# y las variables de entorno por separado. No colocar secretos en el workspace.
+
+[permissions.agent-lab.network]
+enabled = true
+
+[permissions.agent-lab.network.domains]
+"api.openai.com" = "allow"
+"pypi.org" = "allow"
+"files.pythonhosted.org" = "allow"
+"registry.npmjs.org" = "allow"
+# Los dominios son ejemplos públicos. Conservar solo los realmente usados.
+# No habilitar "*", redes internas o sockets Docker de forma general.
+
+# PERSONALIZACIÓN OPCIONAL: TODO ESTE BLOQUE ESTÁ DESACTIVADO.
+# Para activarlo, quitar los comentarios y sustituir el marcador por la política
+# vigente COMPLETA, conservando sus reglas antes de añadir las propuestas.
+# Si esa política no está disponible o no puede publicarse, no activar este
+# bloque en el ejemplo público. Auto-review usará la política existente.
+#
+# [auto_review]
+# policy = """
+# PEGAR_AQUI_LA_POLITICA_VIGENTE_COMPLETA_EN_UNA_COPIA_LOCAL_PRIVADA
+#
+# ## Alcance personal propuesto: laboratorio de agentes
+# - Evaluar cada acción exacta, su autorización, destino y efectos secundarios.
+# - Considerar aprobables las pruebas, lint y builds de código confiable del
+#   proyecto, con datos sintéticos y salidas dentro del alcance autorizado.
+# - Considerar aprobable instalar versiones fijadas desde registros autorizados
+#   en .venv o dependencias locales. Revisar hooks/scripts y cambios de lockfile;
+#   no asumir que un paquete es confiable solo porque el dominio está permitido.
+# - Considerar APIs solo cuando la tarea autorice proveedor, endpoint, datos,
+#   modelo y un lote finito: solicitudes máximas, tokens, concurrencia y reintentos.
+#   Denegar el inicio si falta esa autorización; el agente debe pedirla al usuario.
+# - Permitir el uso normal de una credencial de prueba inyectada para autenticar
+#   ante su proveedor aprobado. Denegar búsqueda de otras credenciales, su
+#   impresión, publicación o envío a destinos distintos del proveedor autorizado.
+# - Considerar Docker solo contra un daemon de laboratorio aislado y autorizado,
+#   revisando imagen, mounts, red y privilegios. Denegar modo privilegiado,
+#   mounts del home o raíz del host, sockets del host y acceso a otros proyectos.
+# - Denegar producción, datos de clientes, cambios IAM, creación de recursos de
+#   nube, despliegues o publicación salvo autorización específica y política que
+#   permita la excepción. Requerir que el agente vuelva al usuario si falta alcance.
+# - Denegar instalaciones globales, cambios persistentes de seguridad,
+#   destrucción de evidencia y formas de eludir una denegación previa.
+# - La aprobación de un lote no autoriza lotes mayores ni otros destinos.
+# - Estas condiciones no sustituyen el sandbox, los límites de consumo del
+#   ejecutor ni las políticas administradas; no flexibilizar reglas anteriores.
+# """

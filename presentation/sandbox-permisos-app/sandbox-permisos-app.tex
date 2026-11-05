@@ -1,0 +1,467 @@
+\documentclass[aspectratio=169,12pt]{beamer}
+\usetheme[progressbar=none,sectionpage=none]{moloch}
+\geometry{paperwidth=320mm,paperheight=180mm}
+\usepackage[spanish]{babel}
+\shorthandoff{"}
+\usepackage{tikz,graphicx,listings,pgfpages}
+\usetikzlibrary{arrows.meta}
+\usepackage{estilo-sandbox}
+\title{Sandbox y permisos en Codex}
+\author{Knowledge Sharing}
+\hypersetup{pdftitle={Sandbox y permisos en Codex},pdfsubject={Conceptos, fronteras de ejecución y configuración interpretada},pdfauthor={Knowledge Sharing},colorlinks=true,urlcolor=Azul}
+\newcommand{\refprincipal}{\url{https://learn.chatgpt.com/docs/sandboxing?surface=app}}
+\newcommand{\refseguridad}{\url{https://learn.chatgpt.com/docs/agent-approvals-security}}
+\newcommand{\refconfig}{\url{https://learn.chatgpt.com/docs/config-file/config-reference}}
+\newcommand{\refauto}{\url{https://learn.chatgpt.com/docs/sandboxing/auto-review}}
+\begin{document}
+
+\begingroup
+\oscuro
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+\texto{16}{166}{160}{11}{\textcolor{Azul}{\textbf{AUTONOMÍA CON LÍMITES}}}
+\texto{16}{145}{165}{38}{\textbf{Sandbox y\\permisos en Codex}}
+\texto{16}{95}{149}{18}{El sandbox acota lo que pueden hacer los procesos ejecutados por el agente.}
+\texto{16}{37}{150}{15}{\textcolor{Azul}{Permite avanzar por cuenta propia\\dentro de un alcance definido.}}
+
+\texto{184}{134}{118}{11}{\textcolor{Azul}{\textbf{ALCANCE PERMITIDO}}}
+\draw[limite] (180,72) rectangle (305,124);
+\node[caja,minimum width=48mm] (proceso) at (211,99) {Programa};
+\node[align=center,font=\fontsize{14}{18}\selectfont] at (274,99) {Leer un\\documento};
+\draw[flujo] (proceso.east) -- (249,99);
+\draw[flujo] (274,71) -- (274,56);
+\draw[Azul,line width=1.2pt] (271,62) -- (277,68);
+\draw[Azul,line width=1.2pt] (271,68) -- (277,62);
+\texto{211}{49}{94}{13}{Modificar otra carpeta}
+\texto{180}{33}{125}{10}{Política ilustrativa: lectura permitida y escritura externa restringida.}
+
+\note{El beneficio es realizar trabajo útil con límites técnicos y reducir interrupciones rutinarias. El dibujo representa una política ilustrativa, no la configuración de toda sesión. Un sandbox puede ser un conjunto de controles locales o un entorno remoto; no equivale siempre a un contenedor desechable. El dibujo no afirma que todo acceso externo sea inaccesible. Los controles se definen por recurso y operación. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+\endgroup
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+\tit{Quién decide, ejecuta y controla}
+\bajada{El agente usa el modelo para decidir y solicita acciones mediante herramientas.}
+
+\node[caja,minimum width=58mm] (agente) at (43,96) {Agente + modelo};
+\node[caja,minimum width=52mm] (herramienta) at (123,96) {Herramienta};
+\node[caja,minimum width=54mm] (proceso) at (205,96) {Proceso};
+\node[caja,minimum width=52mm] (recurso) at (286,96) {Recursos};
+\draw[flujo] (agente.east) -- (herramienta.west);
+\draw[flujo] (herramienta.east) -- (proceso.west);
+\draw[flujo] (proceso.east) -- (recurso.west);
+\draw[limite] (168,68) rectangle (313,123);
+\texto{170}{131}{142}{11}{\textcolor{Azul}{\textbf{ENTORNO DE EJECUCIÓN}}}
+\texto{170}{65}{142}{11}{\textcolor{Azul}{Sandbox: controles de ejecución y accesos}}
+\texto{17}{54}{142}{13}{El modelo propone.\\La herramienta inicia la acción.}
+\texto{172}{46}{138}{13}{El programa la intenta.\\El sistema impone los límites.}
+\cierre{Los programas lanzados heredan las restricciones aplicables a sus comandos.}
+
+\note{El agente es el sistema que organiza el ciclo usando al modelo; no se presentan como dos inteligencias independientes. El entorno contiene procesos y recursos. El sandbox aplica controles sobre esa ejecución. Python, Git, instaladores y pruebas heredan los límites de sus comandos. Las herramientas externas, navegadores y conectores pueden usar controles separados. El perímetro del diagrama identifica la ejecución controlada, no una afirmación de arquitectura física idéntica en todo cliente. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal\ y \refseguridad.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+\tit{Qué dimensiones se controlan}
+\bajada{Un permiso depende del recurso y de la operación que se intenta realizar.}
+\node[anchor=north west] at (20,119) {\begin{minipage}{280mm}
+\fontsize{16}{23}\selectfont
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{74mm}p{196mm}@{}}
+\toprule
+\textcolor{Azul}{\textbf{Lectura}} & Qué información puede consultar el proceso \\
+\midrule
+\textcolor{Azul}{\textbf{Escritura}} & Qué archivos o ubicaciones puede modificar \\
+\midrule
+\textcolor{Azul}{\textbf{Ejecución}} & Qué operaciones puede realizar un programa \\
+\midrule
+\textcolor{Azul}{\textbf{Red}} & Qué conexiones puede realizar el comando \\
+\bottomrule
+\end{tabular}
+\end{minipage}};
+\cierre{Leer un archivo no implica tener permiso para modificarlo.}
+
+\note{Son dimensiones para razonar sobre controles, no cuatro ajustes universales idénticos en todos los productos. Ejecución no significa que sandbox\_mode configure por sí solo una lista de programas permitidos; influyen capacidades, permisos y políticas adicionales. En workspace-write, la lectura no queda automáticamente restringida a la carpeta del proyecto. Un prompt no establece por sí solo una barrera técnica. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refconfig.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+\tit{Modos de sandbox}
+\bajada{Definen el alcance inicial de la ejecución de comandos.}
+\texto{20}{117}{90}{13}{\textcolor{Azul}{\texttt{read-only}}}
+\texto{121}{120}{179}{19}{Lectura bajo controles}
+\texto{121}{104}{179}{14}{Las escrituras quedan restringidas.}
+\regla{91}
+\texto{20}{81}{90}{13}{\textcolor{Azul}{\texttt{workspace-write}}}
+\texto{121}{84}{179}{19}{Escritura en el proyecto}
+\texto{121}{68}{179}{14}{También en otras ubicaciones autorizadas.}
+\regla{55}
+\texto{20}{45}{94}{13}{\textcolor{Violeta}{\texttt{danger-full-access}}}
+\texto{121}{48}{179}{19}{Sin las fronteras del sandbox}
+\texto{121}{32}{179}{14}{Persisten los permisos del sistema.}
+\texto{12}{15}{290}{10}{Solo lectura puede permitir ejecutar programas que respeten sus límites.}
+
+\note{La página principal resume read-only con una descripción simplificada de comandos y aprobación. La guía de seguridad aclara que los comandos permitidos pueden ejecutarse sin aprobación según la política. No interpretar read-only como ausencia de todo proceso. workspace-write también puede incluir temporales y proteger subrutas específicas. danger-full-access retira las restricciones del sandbox de Codex y no convierte al usuario en administrador. La aprobación es una decisión independiente. Los perfiles de permisos nuevos tienen mecanismos de selección propios; no mezclarlos con estos modos sin revisar compatibilidad. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refconfig.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+\tit{Acción permitida, revisión o bloqueo}
+\bajada{El alcance técnico y la política determinan cómo puede continuar una acción.}
+
+\node[caja,minimum width=51mm] (accion) at (40,87) {Acción};
+\node[caja,minimum width=63mm] (alcance) at (127,87) {Evaluar controles};
+\draw[flujo] (accion.east) -- (alcance.west);
+\node[caja,minimum width=71mm] (permitida) at (265,118) {Ejecutar};
+\node[caja,minimum width=71mm] (revision) at (265,84) {Revisar solicitud};
+\node[caja,minimum width=71mm] (bloqueo) at (265,50) {Bloquear / detener};
+\draw[flujo] (alcance.east) -- (171,87) |- (permitida.west);
+\draw[flujo] (171,87) |- (revision.west);
+\draw[flujo] (171,87) |- (bloqueo.west);
+\draw[flujo,draw=Azul] (revision.east) -- (308,84) -- (308,118) -- (permitida.east);
+\draw[flujo,draw=Violeta] (308,84) -- (308,50) -- (bloqueo.east);
+\texto{310}{108}{9}{8}{Sí}
+\texto{310}{68}{9}{8}{No}
+\texto{176}{128}{52}{10}{Dentro del alcance}
+\texto{176}{96}{52}{10}{Excepción elegible}
+\texto{176}{62}{52}{10}{Sin excepción disponible}
+\texto{20}{45}{145}{12}{La revisión puede aprobar o denegar.\\Una aprobación puede ampliar esa ejecución.}
+\cierre{Una acción fuera del alcance no siempre tiene una excepción disponible.}
+
+\note{Flujo conceptual, no algoritmo completo del cliente. Una acción permitida puede continuar salvo otras reglas aplicables. Si requiere aprobación y existe una excepción elegible, se revisa. Si no hay excepción disponible o se deniega, detener esa acción. La rama de revisión puede concluir en ejecución aprobada o bloqueo; el texto visible señala ambas salidas. Una aprobación puede cambiar el alcance de esa ejecución, por lo que debe distinguirse del permiso ordinario. Nunca significa no solicitar aprobación, no concederla automáticamente. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refauto.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begingroup
+\oscuro
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / Auto-review}
+\tit{Cuándo interviene Auto-review}
+\bajada{Las acciones sin aprobación adicional continúan. Las solicitudes elegibles se revisan.}
+
+\node[caja,minimum width=60mm] (accion) at (47,92) {Acción propuesta};
+\node[caja,minimum width=65mm] (solicitud) at (144,92) {¿Aprobación?};
+\node[caja,minimum width=85mm] (continua) at (264,118) {Continúa};
+\node[caja,minimum width=85mm] (revisa) at (264,76) {Usuario o Auto-review};
+\draw[flujo] (accion.east) -- (solicitud.west);
+\draw[flujo] (solicitud.east) -- (201,92) |- (continua.west);
+\draw[flujo] (201,92) |- (revisa.west);
+\texto{203}{131}{17}{11}{No}
+\texto{187}{66}{116}{11}{Sí: solicitud elegible, según la política}
+\texto{20}{49}{280}{12}{Ejemplo: escribir en \texttt{/ruta/entregas}, fuera del alcance actual.}
+\texto{20}{36}{280}{12}{La política debe permitir solicitar esa excepción. No se anticipa la decisión.}
+\cierre{Auto-review evalúa solicitudes de aprobación elegibles.}
+
+\note{El flujo se limita a acciones que pueden continuar sin aprobación o generar una solicitud elegible. No muestra como aprobables todas las acciones fuera del alcance: algunas restricciones no admiten excepción, como ya se explicó en el flujo general. Con approvals\_reviewer = auto\_review y una política interactiva como on-request, las solicitudes elegibles llegan al agente revisor; con user, al usuario. Una regla explícita puede exigir revisión de una acción sensible incluso dentro del sandbox. Computer Use mantiene aprobaciones de aplicaciones propias. El caso de /ruta/entregas es conceptual y no se ejecuta ni se asume aprobado. Contraste: una edición ya permitida y sin revisión adicional continúa sin activar Auto-review. Pregunta: ¿revisa toda acción? No. Con never no hay solicitudes para revisar. Fuentes oficiales, consulta del 5 de noviembre de 2026: \refauto\ y \refseguridad.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+\endgroup
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / Auto-review}
+\tit{Qué evalúa el revisor}
+\bajada{Un agente separado evalúa la acción exacta con el contexto disponible.}
+
+\draw[limite] (18,68) rectangle (138,122);
+\texto{25}{115}{106}{13}{Petición y contexto}
+\texto{25}{99}{106}{13}{Acción exacta y destino}
+\texto{25}{83}{106}{13}{Evidencia relevante}
+\node[caja,minimum width=69mm,minimum height=24mm] (politica) at (190,95) {Evaluación\\según la política};
+\node[caja,minimum width=57mm,minimum height=24mm] (resultado) at (280,95) {Decisión y\\explicación};
+\draw[flujo] (139,95) -- (politica.west);
+\draw[flujo] (politica.east) -- (resultado.west);
+\texto{20}{54}{281}{14}{¿Qué se hará? ¿Hay autorización? ¿Qué riesgos y efectos tiene?}
+\texto{20}{38}{281}{12}{Ejemplo: identificar la escritura solicitada y su carpeta de destino.}
+\cierre{La revisión usa contexto y evidencia. No es una garantía infalible.}
+
+\note{El revisor recibe una transcripción compacta, la solicitud exacta y evidencia relevante de herramientas. Puede realizar comprobaciones de solo lectura para completar contexto; no recibe razonamiento interno privado. En el ejemplo, se identifica qué archivo se escribiría y en qué carpeta, junto con la petición que respalda la acción. La política busca detectar exfiltración de información privada, búsqueda de credenciales, debilitamiento persistente de seguridad y acciones destructivas con riesgo irreversible. Estos son objetivos documentados, no garantías de detección. No inventar una respuesta del revisor ni afirmar qué resultado debe producir el caso conceptual. La política puede variar por configuración y requisitos administrados. Personalizarla puede sustituir su contenido: conservar la política vigente completa y no aplicar plantillas incompletas. Fuentes oficiales, consulta del 5 de noviembre de 2026: \refauto. Diseño segmentado y explicación adyacente adaptados de \url{https://citral.ucsb.edu/faculty/resources/engaging-students/explaining-content}.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / Auto-review}
+\tit{Qué ocurre después de la revisión}
+\bajada{Aprobación y denegación son decisiones. Un timeout es un fallo técnico.}
+
+\texto{22}{119}{85}{16}{\textcolor{Azul}{\textbf{Aprobación}}}
+\texto{118}{119}{183}{14}{Puede continuar la acción\\con el alcance autorizado.}
+\regla{96}
+\texto{22}{88}{85}{16}{\textcolor{Violeta}{\textbf{Denegación}}}
+\texto{118}{88}{183}{14}{Alternativa más segura\\o detenerse y consultar.}
+\texto{118}{69}{183}{11}{No eludir el rechazo ejecutando lo mismo por otro camino.}
+\regla{58}
+\texto{22}{50}{85}{15}{\textcolor{Azul}{\textbf{Timeout}}\\\textcolor{Azul}{\fontsize{10}{12}\selectfont Fallo técnico}}
+\texto{118}{50}{183}{13}{La revisión no terminó a tiempo.\\Eso no demuestra que la acción sea insegura.}
+\cierre{Aprobar esa acción no concede permisos generales para acciones futuras.}
+\texto{12}{13}{295}{9}{Auto-review puede equivocarse. Complementa al sandbox y a las políticas de la organización.}
+
+\note{Al aprobar, continúa la acción conforme al alcance concedido; no afirmar que toda aprobación crea permisos permanentes. Si se deniega, el agente recibe la razón y debe elegir una alternativa materialmente más segura o detenerse y consultar. No puede perseguir el mismo resultado mediante ejecución indirecta para eludir la política. Un timeout se informa por separado y no constituye una evaluación de riesgo negativa. La implementación abierta documenta un circuit breaker ante tres denegaciones consecutivas o diez dentro de las últimas cincuenta revisiones del mismo turno; es un detalle dependiente de versión. En clientes compatibles, /approve permite seleccionar una acción denegada para un reintento específico que sigue sujeto al revisor y puede volver a denegarse según la política. No confundir ese mecanismo con una anulación general. Ajustar raíces acotadas y reglas precisas puede reducir revisiones rutinarias; evitar reglas amplias que borren la frontera. Preguntas de comprensión: ¿un timeout equivale a denegación? No. ¿Auto-review añade carpetas por adelantado? No. ¿Con never recibe solicitudes? No. Los ejemplos de esta lámina son conceptuales; el recorrido real de la demo se resume al final de la presentación. Fuente oficial, consulta del 5 de noviembre de 2026: \refauto.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Configuración y alcance}
+\tit{Configuración inicial explicada}
+\bajada{\texttt{\textasciitilde/.codex/config.toml} guarda tus preferencias de inicio.}
+
+\node[anchor=north west] at (16,122) {\begin{minipage}{174mm}\tcbinputlisting{codigo,listing file=ejemplo-config.toml}\end{minipage}};
+\texto{202}{116}{104}{13}{\textcolor{Azul}{\textbf{sandbox\_mode}}\\Alcance técnico inicial.}
+\texto{202}{94}{104}{13}{\textcolor{Azul}{\textbf{approval\_policy}}\\Cuándo solicitar aprobación.}
+\texto{202}{72}{104}{13}{\textcolor{Azul}{\textbf{approvals\_reviewer}}\\Quién revisa las solicitudes.}
+\texto{202}{50}{104}{13}{\textcolor{Azul}{\textbf{Raíces y red}}\\Accesos de los comandos.}
+\cierre{Ejemplo didáctico. Su efecto está sujeto a la configuración y requisitos efectivos.}
+
+\note{Interpretar antes de comparar: workspace-write permite escritura en raíces autorizadas; on-request permite solicitar aprobación; user dirige revisión al usuario; writable\_roots vacío no añade raíces; network\_access false mantiene deshabilitada la red de comandos dentro de ese sandbox. No se aplica este archivo a la configuración real. Las preferencias personales pueden ser reemplazadas por capas de mayor prioridad, respetando requisitos obligatorios. Un proyecto de confianza puede aportar su .codex/config.toml. No combinar este ejemplo con default\_permissions y tablas de perfiles nuevos. Fuente oficial, consulta del 5 de noviembre de 2026: \refconfig\ y \url{https://learn.chatgpt.com/docs/config-file/config-basic}.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Configuración y alcance}
+\tit{Cambiar una decisión de configuración}
+\bajada{Cada comparación parte de la misma base. Solo cambia la línea señalada.}
+
+\texto{20}{118}{281}{13}{\textcolor{Azul}{\textbf{A. Cuándo solicitar aprobación}}}
+\texto{20}{101}{281}{14}{\texttt{approval\_policy = \textquotedbl on-request\textquotedbl} $\rightarrow$ \texttt{approval\_policy = \textquotedbl never\textquotedbl}}
+\texto{20}{86}{281}{14}{Se eliminan las solicitudes. El sandbox conserva sus límites.}
+\regla{73}
+\texto{20}{64}{281}{13}{\textcolor{Azul}{\textbf{B. Quién revisa, conservando on-request}}}
+\texto{20}{47}{281}{14}{\texttt{approvals\_reviewer = \textquotedbl user\textquotedbl} $\rightarrow$ \texttt{approvals\_reviewer = \textquotedbl auto\_review\textquotedbl}}
+\texto{20}{32}{281}{14}{Se delega la revisión elegible. No se amplían las carpetas por ese cambio.}
+\texto{12}{15}{290}{10}{Son variantes independientes. Con never no hay solicitudes que auto-review pueda revisar.}
+
+\note{Se muestran las líneas TOML antes y después de cada cambio, con sintaxis completa. A modifica únicamente approval\_policy desde la base. B vuelve a partir de la base con on-request y modifica únicamente approvals\_reviewer. No se aplican A y B consecutivamente. Pregunta: never permite escribir fuera del alcance? No. La política no autoriza por sí sola operaciones denegadas. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refauto.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Configuración y alcance}
+\tit{Alcance de escritura}
+\bajada{writable\_roots añade ubicaciones de escritura al modo workspace-write.}
+
+\draw[limite] (20,78) rectangle (147,120);
+\texto{28}{113}{110}{16}{\textcolor{Azul}{\textbf{Proyecto}}}
+\texto{28}{94}{110}{12}{Raíces ya autorizadas}
+\node[caja,minimum width=112mm] (extra) at (245,99) {/ruta/compartida};
+\draw[flujo] (148,99) -- (extra.west);
+\texto{20}{66}{285}{13}{\texttt{writable\_roots = []}}
+\texto{20}{50}{285}{13}{\texttt{writable\_roots = [\textquotedbl/ruta/compartida\textquotedbl]}}
+\texto{20}{34}{285}{12}{Cambia solo la carpeta adicional. La política de aprobación y la red se conservan.}
+\texto{12}{16}{290}{10}{Ruta ficticia. Añadir escritura no define por sí solo todo el alcance de lectura.}
+
+\note{Comparar ambas listas manteniendo el resto de la base. La carpeta adicional no sustituye las raíces del proyecto. La lista vacía tampoco elimina ubicaciones temporales que permita la configuración efectiva. Las rutas protegidas pueden tener reglas propias. Para tareas en repositorios distintos, preferir proyectos o worktrees separados a ampliar de forma general el alcance. Una excepción puntual puede usar revisión acotada o reglas de comando compatibles. No se crea la ruta ficticia ni se cambian permisos. Fuente oficial, consulta del 5 de noviembre de 2026: \refconfig\ y \refprincipal.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Configuración y alcance}
+\tit{Acceso de red}
+\bajada{Habilitar conexiones de comandos es distinto de permitir escritura.}
+
+\texto{22}{116}{128}{16}{\textcolor{Azul}{\textbf{Red deshabilitada}}}
+\texto{22}{95}{129}{14}{\texttt{network\_access = false}}
+\texto{22}{75}{128}{14}{El comando no recibe\\acceso saliente de red.}
+\texto{173}{116}{130}{16}{\textcolor{Azul}{\textbf{Red habilitada}}}
+\texto{173}{95}{130}{14}{\texttt{network\_access = true}}
+\texto{173}{75}{129}{14}{Puede usar red según\\los controles efectivos.}
+\draw[Linea,line width=.5pt] (158,57) -- (158,122);
+\texto{22}{45}{279}{12}{Ejemplo: descargar una dependencia. El destino puede requerir filtros o autenticación.}
+\cierre{Este ajuste no define los permisos de todos los navegadores y conectores.}
+
+\note{Se modifica únicamente network\_access dentro de sandbox\_workspace\_write, conservando las demás claves de la base. Habilitar red no prueba conectividad a todo destino ni anula controles administrados, proxy, firewall o autenticación. Configurar destinos permitidos y activar su mecanismo de filtrado son decisiones distintas que dependen de plataforma y configuración. No afirmar que true aplica por sí solo una allowlist. Pregunta: esta regla bloquea todo navegador cloud? No. La prueba de conectividad no se ejecuta aquí. Fuente oficial, consulta del 5 de noviembre de 2026: \refconfig\ y \refseguridad.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Configuración y alcance}
+\tit{El lugar de ejecución importa}
+\bajada{Una tarea puede combinar pasos locales y pasos en la nube.}
+
+\texto{22}{114}{128}{17}{\textcolor{Azul}{\textbf{Computadora conectada}}}
+\texto{22}{91}{128}{15}{Un programa accede a\\archivos del equipo.}
+\texto{22}{66}{128}{13}{Se aplican los controles locales de ejecución.}
+\texto{173}{114}{130}{17}{\textcolor{Azul}{\textbf{Entorno cloud}}}
+\texto{173}{91}{129}{15}{Un navegador alojado\\accede a una web.}
+\texto{173}{66}{129}{13}{Se aplican los controles de ese entorno.}
+\draw[Linea,line width=.5pt] (158,51) -- (158,121);
+\texto{22}{42}{278}{12}{El orquestador coordina la tarea. Cada ejecución tiene su propio alcance.}
+\cierre{Un permiso o restricción local no se transfiere automáticamente a cloud.}
+
+\note{Ejemplo conceptual de Local computer access with Work Cloud. La conversación puede estar coordinada en cloud y utilizar ejecutores locales o remotos. Controles Global compatibles pueden gobernar al orquestador; la ejecución tiene requisitos propios. No aplicar automáticamente reglas del navegador desktop a uno alojado. Configurar y probar por separado cada entorno y cada vía de acceso. La selección de una superficie no demuestra que todas las herramientas actúen en un mismo lugar. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal\ y \url{https://learn.chatgpt.com/docs/enterprise/managed-configuration}.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begingroup
+\oscuro
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Configuración y alcance}
+\tit{Qué controla el sandbox y qué debes revisar}
+\bajada{Una acción puede estar dentro de los permisos y aun así ser incorrecta.}
+\texto{12}{129}{295}{12}{Política ilustrativa: escritura solo en \texttt{/proyecto}, sin excepciones.}
+
+\draw[limite] (18,39) rectangle (172,112);
+\texto{25}{118}{140}{12}{\textcolor{Azul}{\textbf{/proyecto: escritura permitida}}}
+\texto{25}{101}{140}{14}{Modificar el documento equivocado}
+\texto{25}{85}{140}{12}{Dentro del alcance. Cambio incorrecto.}
+\draw[Linea,line width=.4pt] (25,73) -- (165,73);
+\texto{25}{65}{140}{14}{Guardar información falsa}
+\texto{25}{49}{140}{12}{Dentro del alcance. Contenido por verificar.}
+
+\draw[flujo] (173,91) -- (198,91);
+\draw[Violeta,line width=1.5pt] (180,87) -- (188,95);
+\draw[Violeta,line width=1.5pt] (180,95) -- (188,87);
+\texto{205}{104}{100}{14}{Escribir en otra carpeta}
+\texto{205}{83}{100}{12}{Fuera del alcance.\\La escritura queda bloqueada.}
+
+\cierre{El sandbox limita el acceso. Revisa también qué cambió y si cumple lo solicitado.}
+
+\note{Tres situaciones conceptuales bajo una misma política ilustrativa de escritura: solo se permite modificar dentro de /proyecto y no se conceden excepciones. Fuera de esa ubicación se espera bloqueo; no se informa una prueba realizada. Dentro de ella, modificar el documento equivocado o guardar información falsa puede cumplir el permiso de ubicación y aun así ser incorrecto. Las acciones pueden estar sujetas además a otras políticas, reglas o revisiones; no afirmar que el sandbox obliga a ejecutarlas o que todo acceso permitido carece de controles. La lectura y la red no se describen en esta política ilustrativa. La autorización de negocio es otra comprobación: tener acceso técnico no acredita que una tarea haya sido encargada o aprobada. Distinguir en la explicación oral la configuración declarada del comportamiento observado, sin introducir otra idea principal en el cierre visual. El sandbox no garantiza exactitud ni seguridad integral, ni implica reversión automática de cambios. Fuentes oficiales consultadas el 5 de noviembre de 2026: \refprincipal\ y \refseguridad. Diseño basado en ejemplo resuelto, etiquetas próximas a cada acción y foco único; orientaciones de \url{https://citral.ucsb.edu/faculty/resources/engaging-students/explaining-content}\ y \url{https://education.nsw.gov.au/about-us/education-data-and-research/cese/publications/practical-guides-for-educators/cognitive-load-theory-in-practice.html}.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+\endgroup
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{04 / Demo y apoyo}
+\tit{Una tarea, dos revisores}
+\bajada{Misma tarea y sandbox solicitado. Cambia quién revisa la solicitud para exportar.}
+\texto{22}{125}{125}{11}{\textcolor{Azul}{\textbf{REVISIÓN MANUAL}}}
+\texto{22}{113}{44}{68}{\textcolor{Azul}{4}}
+\texto{74}{102}{75}{16}{intervenciones\\humanas}
+\texto{22}{82}{129}{12}{3 previas y 1 para exportar}
+\texto{177}{125}{129}{11}{\textcolor{Azul}{\textbf{AUTO-REVIEW}}}
+\texto{177}{113}{44}{68}{\textcolor{Azul}{0}}
+\texto{229}{102}{75}{16}{intervenciones\\humanas}
+\texto{177}{82}{129}{12}{Confirmado por el usuario}
+\node[anchor=north west] at (22,63) {\begin{minipage}{278mm}
+\fontsize{13}{18}\selectfont
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}p{122mm}p{69mm}p{69mm}@{}}
+\toprule
+\textbf{Resultado verificado} & \textbf{Manual} & \textbf{Auto-review} \\
+\midrule
+Evaluación y copia exportada & 6 de 6 y copia & 6 de 6 y copia \\
+\bottomrule
+\end{tabular}
+\end{minipage}};
+\texto{22}{33}{282}{11}{Una pasada por modo. El resumen no identifica decisiones automáticas individuales.}
+\texto{22}{20}{278}{12}{\textcolor{Violeta}{\textbf{Ambas tareas completadas. Exportar fuera del alcance requiere una solicitud elegible.}}}
+
+\note{Demo ejecutada por el usuario en dos sesiones de CLI 0.166.0 con Python 3.13.7 y el mismo modelo solicitado, gpt-6.1-sol. El evaluador determinista y seis casos sintéticos son la carga de trabajo; Codex es el agente observado. La sesión manual mostró cuatro solicitudes distintas: tres por inspecciones con Python en línea y una para exportar fuera de las raíces declaradas. No sumar de nuevo capturas repetidas de un prompt. Las cuatro operaciones de la tarea terminaron con código 0 en ambos modos. El resultado automático expone auto\_review y una excepción solicitada, sin identificar la decisión individual; no atribuirla solo por el éxito. El usuario confirmó que el recorrido automático terminó sin pedirle permisos: cero intervenciones humanas. Esa confirmación respalda el conteo, no identifica decisiones internas del revisor. Se leyeron y verificaron los informes internos y las copias de ambos recorridos: mismo contenido y SHA-256, seis de seis casos. Se comprobó que scripts, casos y prompt eran idénticos entre proyectos; no se auditó identidad de todos los comandos de inspección o controles administrados. El intento previo detenido por un prompt demasiado estricto se descartó y ambos recorridos usaron el prompt corregido. El registro público es results/comparacion-aprobaciones.md. Resultado de una sola pasada por modo: cuatro intervenciones humanas frente a cero, con ambas tareas correctas. No inferir ahorro de tiempo, coste o seguridad general, ni extrapolar a la app o a todas las tareas. Los comandos de inspección elegidos por el agente pueden variar. Fuente oficial, consulta del 5 de noviembre de 2026: \refauto.}
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{04 / Demo y apoyo}
+\tit{Del concepto al selector de la app}
+\bajada{Apoyo: las opciones de interfaz combinan controles que ya conoces.}
+
+\node[anchor=north west] at (12,125) {\includegraphics[width=173mm,trim=148bp 684bp 728bp 94bp,clip]{assets/selector-permisos.png}};
+\texto{199}{124}{109}{14}{\textcolor{Azul}{\textbf{Ask for approval}}\\Revisión humana.}
+\texto{199}{100}{109}{14}{\textcolor{Azul}{\textbf{Approve for me}}\\Revisión automática elegible.}
+\texto{199}{76}{109}{14}{\textcolor{Violeta}{\textbf{Full access}}\\Sin fronteras del sandbox ni prompts.}
+\texto{199}{48}{109}{14}{\textcolor{Azul}{\textbf{Custom}}\\Configuración personalizada.}
+\texto{12}{20}{289}{10}{Captura del usuario. Opciones sujetas a cliente, cuenta y políticas.}
+
+\note{La captura fue aportada por el usuario y muestra una selección histórica, no la configuración actual verificada. Ask for approval y Approve for me conservan workspace-write inicialmente y cambian el revisor elegible. La página define Full access como danger-full-access más never; no concede permisos de administrador del sistema. Custom o perfiles nombrados dependen del cliente y configuración. La captura se incluye como imagen real recortada en LaTeX. No es una instrucción para seleccionar Full access. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal\ y \refauto.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{04 / Demo y apoyo}
+\tit{Preferencias dentro de límites obligatorios}
+\bajada{Tú eliges cómo empezar. La empresa limita qué opciones puedes elegir.}
+
+\texto{22}{123}{128}{17}{\textcolor{Azul}{\textbf{Tu preferencia}}}
+\texto{22}{109}{128}{12}{\texttt{config.toml}}
+\texto{22}{94}{128}{12}{\texttt{sandbox\_mode = \textquotedbl workspace-write\textquotedbl}\\\texttt{approval\_policy = \textquotedbl on-request\textquotedbl}}
+\texto{22}{69}{128}{12}{Escribir dentro del proyecto.\\Pedir aprobación para una excepción.}
+
+\texto{173}{123}{129}{17}{\textcolor{Azul}{\textbf{Regla de la empresa}}}
+\texto{173}{109}{129}{12}{\texttt{requirements.toml}}
+\texto{173}{94}{129}{12}{\texttt{allowed\_sandbox\_modes = [}\\\texttt{\hspace{4mm}\textquotedbl read-only\textquotedbl,}\\\texttt{\hspace{4mm}\textquotedbl workspace-write\textquotedbl}\\\texttt{]}}
+\texto{173}{64}{129}{12}{La empresa admite solo esos dos modos.}
+\draw[Linea,line width=.5pt] (158,55) -- (158,127);
+
+\regla{51}
+\texto{22}{46}{142}{12}{\texttt{workspace-write} o \texttt{read-only}}
+\texto{173}{46}{129}{12}{Compatibles con esta regla.}
+\texto{22}{35}{142}{12}{\textcolor{Violeta}{\texttt{danger-full-access}}}
+\texto{173}{35}{129}{12}{No se admite como opción permitida.}
+\cierre{Tu preferencia debe estar dentro de las opciones que permite la empresa.}
+\texto{12}{13}{295}{8}{Ejemplo con modos tradicionales. Para clientes recientes, OpenAI recomienda perfiles de permisos.}
+
+\note{Ejemplo conceptual, no aplicado al sistema. config.toml selecciona workspace-write y on-request; requirements.toml limita los modos a read-only y workspace-write. Esa regla no impone por sí misma un valor a approval\_policy: el ejemplo solo muestra una restricción de modo. Elegir cualquiera de esos dos modos cumple esta regla específica, sin afirmar que satisfaga todas las demás políticas. danger-full-access queda fuera de la lista. La documentación vigente indica que, al resolver una configuración incompatible con un requisito, un cliente local compatible recurre a un valor compatible y avisa al usuario; no prometer un fallo universal de inicio. Este ejemplo conserva la familia tradicional usada por el resto del deck. OpenAI recomienda allowed\_permission\_profiles y default\_permissions para clientes recientes; no mezclar ambas familias en una configuración. MDM es un canal de gestión del dispositivo, no un tercer tipo de preferencia, y por eso se explica aquí: puede distribuir requisitos obligatorios. Las preferencias ordinarias tienen prioridades entre sí, pero deben respetar los requisitos efectivos, que también tienen su propia precedencia. Fuentes oficiales consultadas el 5 de noviembre de 2026: \url{https://learn.chatgpt.com/docs/enterprise/managed-configuration}\ y \refconfig. Diseño: ejemplo resuelto, interpretación junto al código y resultado explícito; adaptado de las orientaciones institucionales de \url{https://citral.ucsb.edu/faculty/resources/engaging-students/explaining-content}\ y \url{https://education.nsw.gov.au/about-us/education-data-and-research/cese/publications/practical-guides-for-educators/cognitive-load-theory-in-practice.html}.}
+
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+\end{document}

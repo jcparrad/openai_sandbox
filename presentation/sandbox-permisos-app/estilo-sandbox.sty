@@ -1,0 +1,54 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{estilo-sandbox}[2026/11/05 Estilo editorial para la presentacion]
+\RequirePackage{fontspec,microtype,booktabs,array}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{listings,skins}
+\setsansfont{FiraSans-Regular.otf}[BoldFont=FiraSans-SemiBold.otf,ItalicFont=FiraSans-Italic.otf,BoldItalicFont=FiraSans-SemiBoldItalic.otf]
+\setmonofont{FiraMono-Regular.otf}[BoldFont=FiraMono-Medium.otf,Scale=0.94]
+\newfontfamily\ligera{FiraSans-Light.otf}
+\let\fuenteTitulo\ligera
+\hyphenpenalty=10000\exhyphenpenalty=10000
+\definecolor{Noche}{HTML}{17182B}
+\definecolor{Nieve}{HTML}{F8F9FC}
+\definecolor{Indigo}{HTML}{5148B5}
+\definecolor{Lavanda}{HTML}{B8B2FF}
+\definecolor{Ciruela}{HTML}{7941A3}
+\colorlet{Papel}{Nieve}
+\colorlet{Tinta}{Noche}
+\colorlet{Azul}{Indigo}
+\colorlet{Violeta}{Ciruela}
+\colorlet{Linea}{Noche!20!Nieve}
+\newcommand{\oscuro}{%
+  \let\fuenteTitulo\sffamily
+  \colorlet{Papel}{Noche}\colorlet{Tinta}{Nieve}%
+  \colorlet{Azul}{Lavanda}\colorlet{Violeta}{Lavanda}%
+  \colorlet{Linea}{Nieve!28!Noche}%
+  \setbeamercolor{normal text}{fg=Tinta,bg=Papel}%
+  \setbeamercolor{background canvas}{bg=Papel}}
+\setbeamercolor{normal text}{fg=Tinta,bg=Papel}
+\setbeamercolor{background canvas}{bg=Papel}
+\setbeamercolor{structure}{fg=Azul}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\setbeameroption{hide notes}
+\tikzset{every node/.style={text=Tinta,inner sep=0pt,font=\sffamily},
+ flujo/.style={-{Stealth[length=2mm,width=1.4mm]},draw=Tinta!75!Papel,line width=.8pt},
+ limite/.style={draw=Azul!65!Papel,line width=.8pt,dash pattern=on 2.5pt off 2.5pt},
+ caja/.style={draw=Linea,fill=Azul!7!Papel,line width=.7pt,rounded corners=1.5mm,minimum height=18mm,align=center,font=\fontsize{15}{19}\selectfont}}
+\newcommand{\texto}[5]{\node[anchor=north west,align=left,text width=#3mm,font=\fontsize{#4}{\dimexpr #4pt*5/4\relax}\selectfont] at (#1,#2) {#5};}
+\newcommand{\tit}[1]{\texto{12}{168}{297}{28}{\fuenteTitulo #1}}
+\newcommand{\bajada}[1]{\texto{12}{144}{295}{15}{\textcolor{Tinta!72!Papel}{#1}}}
+\newcommand{\cierre}[1]{\texto{12}{27}{296}{14}{\textcolor{Violeta}{\textbf{#1}}}}
+\newcommand{\regla}[1]{\draw[Linea,line width=.4pt] (20,#1) -- (300,#1);}
+\newcommand{\pie}[1]{%
+ \node[anchor=south west,text=Tinta!55!Papel,font=\fontsize{8}{10}\selectfont] at (12,5) {#1};%
+ \node[anchor=south east,text=Tinta!55!Papel,font=\fontsize{8}{10}\selectfont] at (308,5) {\insertframenumber\,/\,\inserttotalframenumber};}
+\lstdefinelanguage{TOML}{morestring=[b]",morecomment=[l]{\#},sensitive=true,
+ morekeywords={sandbox_mode,approval_policy,approvals_reviewer,writable_roots,network_access,false,true}}
+\lstset{language=TOML,basicstyle=\ttfamily\fontsize{13}{20}\selectfont,columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=false,aboveskip=0pt,belowskip=0pt}
+\tcbset{codigo/.style={enhanced,colback=Noche,colframe=Noche,coltext=Nieve,boxrule=0pt,arc=1.5mm,
+ left=6mm,right=6mm,top=5mm,bottom=5mm,fonttitle=\sffamily\fontsize{11}{14}\selectfont,
+ coltitle=Lavanda,colbacktitle=Noche,title={ejemplo-config.toml},listing only,listing engine=listings,
+ listing options={language=TOML,basicstyle=\ttfamily\color{Nieve}\fontsize{13}{20}\selectfont,
+ keywordstyle={\color{Lavanda}},stringstyle=\color{Nieve},commentstyle=\color{Nieve!55!Noche}}}}

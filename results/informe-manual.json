@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "total": 6,
+  "correctos": 6,
+  "resultados": [
+    {
+      "id": "S1",
+      "resultado": 5,
+      "correcto": true
+    },
+    {
+      "id": "S2",
+      "resultado": 0,
+      "correcto": true
+    },
+    {
+      "id": "P1",
+      "resultado": 2,
+      "correcto": true
+    },
+    {
+      "id": "P2",
+      "resultado": 0,
+      "correcto": true
+    },
+    {
+      "id": "M1",
+      "resultado": "AGENTE",
+      "correcto": true
+    },
+    {
+      "id": "M2",
+      "resultado": "PRUEBA 123",
+      "correcto": true
+    }
+  ]
+}

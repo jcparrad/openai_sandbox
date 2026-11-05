@@ -1,0 +1,11 @@
+# Demo local: conservar la política de revisión existente.
+approval_policy = "on-request"
+approvals_reviewer = "user"
+default_permissions = "demo-sandbox"
+web_search = "disabled"
+
+[permissions.demo-sandbox]
+extends = ":workspace"
+
+[permissions.demo-sandbox.network]
+enabled = false

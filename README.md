@@ -61,7 +61,8 @@ Esta carpeta se preparó como paquete independiente, sin el historial del proyec
 
 La selección excluye configuraciones personales activas, archivos de autenticación, políticas administradas, datos de clientes, transcripciones, evidencia local, la solicitud de trabajo original y presentaciones de referencia. No se distribuyen fuentes tipográficas ni dependencias.
 
-No se ha creado ni publicado un repositorio remoto, ni se ha elegido una licencia de redistribución para este material.
+El repositorio está publicado en [GitHub](https://github.com/jcparrad/openai_sandbox).
+No se ha elegido una licencia de redistribución para este material.
 
 ## Referencias principales
 

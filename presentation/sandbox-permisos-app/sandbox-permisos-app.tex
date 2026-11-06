@@ -23,22 +23,15 @@
 \pie{01 / Fundamentos}
 \texto{16}{166}{160}{11}{\textcolor{Azul}{\textbf{AUTONOMÍA CON LÍMITES}}}
 \texto{16}{145}{165}{38}{\textbf{Sandbox y\\permisos en Codex}}
-\texto{16}{95}{149}{18}{El sandbox acota lo que pueden hacer los procesos ejecutados por el agente.}
-\texto{16}{37}{150}{15}{\textcolor{Azul}{Permite avanzar por cuenta propia\\dentro de un alcance definido.}}
-
-\texto{184}{134}{118}{11}{\textcolor{Azul}{\textbf{ALCANCE PERMITIDO}}}
-\draw[limite] (180,72) rectangle (305,124);
-\node[caja,minimum width=48mm] (proceso) at (211,99) {Programa};
-\node[align=center,font=\fontsize{14}{18}\selectfont] at (274,99) {Leer un\\documento};
-\draw[flujo] (proceso.east) -- (249,99);
-\draw[flujo] (274,71) -- (274,56);
-\draw[Azul,line width=1.2pt] (271,62) -- (277,68);
-\draw[Azul,line width=1.2pt] (271,68) -- (277,62);
-\texto{211}{49}{94}{13}{Modificar otra carpeta}
-\texto{180}{33}{125}{10}{Política ilustrativa: lectura permitida y escritura externa restringida.}
-
-\note{El beneficio es realizar trabajo útil con límites técnicos y reducir interrupciones rutinarias. El dibujo representa una política ilustrativa, no la configuración de toda sesión. Un sandbox puede ser un conjunto de controles locales o un entorno remoto; no equivale siempre a un contenedor desechable. El dibujo no afirma que todo acceso externo sea inaccesible. Los controles se definen por recurso y operación. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal.}
-
+\texto{16}{96}{150}{18}{El sandbox aplica límites técnicos a los comandos que ejecuta Codex.}
+\texto{16}{61}{150}{15}{Define qué archivos pueden leer o modificar y qué conexiones de red pueden realizar.}
+\texto{187}{137}{115}{16}{\textcolor{Azul}{\textbf{Ejemplo: guardar un informe}}}
+\draw[limite] (181,77) rectangle (305,119);
+\texto{188}{111}{111}{15}{Dentro del proyecto\\\texttt{resultados/informe.json}}
+\texto{188}{87}{111}{12}{Escritura autorizada}
+\texto{188}{61}{111}{15}{En otra carpeta\\Puede requerir una excepción}
+\texto{181}{29}{124}{10}{Ejemplo de escritura limitada al proyecto y temporales autorizados.}
+\note{El sandbox de Codex limita técnicamente la ejecución de comandos. No es una instrucción de buen comportamiento escrita en el prompt. Introducir primero archivos y red, sin exigir vocabulario de procesos. El ejemplo ilustra escritura en el proyecto; no afirma que todas las lecturas estén limitadas a él. Una excepción depende de las políticas y no está siempre disponible. Fuentes oficiales consultadas el 6 de noviembre de 2026: \refprincipal\ y \refseguridad.}
 \end{scope}
 \end{tikzpicture}
 \end{frame}
@@ -48,54 +41,26 @@
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
 \begin{scope}[shift={(current page.south west)}]
 \pie{01 / Fundamentos}
-\tit{Quién decide, ejecuta y controla}
-\bajada{El agente usa el modelo para decidir y solicita acciones mediante herramientas.}
-
-\node[caja,minimum width=58mm] (agente) at (43,96) {Agente + modelo};
-\node[caja,minimum width=52mm] (herramienta) at (123,96) {Herramienta};
-\node[caja,minimum width=54mm] (proceso) at (205,96) {Proceso};
-\node[caja,minimum width=52mm] (recurso) at (286,96) {Recursos};
-\draw[flujo] (agente.east) -- (herramienta.west);
-\draw[flujo] (herramienta.east) -- (proceso.west);
-\draw[flujo] (proceso.east) -- (recurso.west);
-\draw[limite] (168,68) rectangle (313,123);
-\texto{170}{131}{142}{11}{\textcolor{Azul}{\textbf{ENTORNO DE EJECUCIÓN}}}
-\texto{170}{65}{142}{11}{\textcolor{Azul}{Sandbox: controles de ejecución y accesos}}
-\texto{17}{54}{142}{13}{El modelo propone.\\La herramienta inicia la acción.}
-\texto{172}{46}{138}{13}{El programa la intenta.\\El sistema impone los límites.}
-\cierre{Los programas lanzados heredan las restricciones aplicables a sus comandos.}
-
-\note{El agente es el sistema que organiza el ciclo usando al modelo; no se presentan como dos inteligencias independientes. El entorno contiene procesos y recursos. El sandbox aplica controles sobre esa ejecución. Python, Git, instaladores y pruebas heredan los límites de sus comandos. Las herramientas externas, navegadores y conectores pueden usar controles separados. El perímetro del diagrama identifica la ejecución controlada, no una afirmación de arquitectura física idéntica en todo cliente. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal\ y \refseguridad.}
-
-\end{scope}
-\end{tikzpicture}
-\end{frame}
-
-\begin{frame}[plain]
-\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
-\begin{scope}[shift={(current page.south west)}]
-\pie{01 / Fundamentos}
-\tit{Qué dimensiones se controlan}
-\bajada{Un permiso depende del recurso y de la operación que se intenta realizar.}
-\node[anchor=north west] at (20,119) {\begin{minipage}{280mm}
+\tit{Una tarea permite ver los límites}
+\bajada{Petición: «Evalúa seis casos y guarda un informe».}
+\texto{20}{123}{280}{12}{Política ilustrativa: escritura en el proyecto y temporales; red de comandos desactivada.}
+\node[anchor=north west] at (20,106) {\begin{minipage}{280mm}
 \fontsize{16}{23}\selectfont
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{@{}p{74mm}p{196mm}@{}}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{143mm}p{127mm}@{}}
 \toprule
-\textcolor{Azul}{\textbf{Lectura}} & Qué información puede consultar el proceso \\
+\textcolor{Azul}{\textbf{Acción del comando}} & \textcolor{Azul}{\textbf{Qué ocurre}} \\
 \midrule
-\textcolor{Azul}{\textbf{Escritura}} & Qué archivos o ubicaciones puede modificar \\
+Guardar el informe en el proyecto & Escritura autorizada \\
 \midrule
-\textcolor{Azul}{\textbf{Ejecución}} & Qué operaciones puede realizar un programa \\
+Exportarlo a otra carpeta & Requiere una excepción elegible \\
 \midrule
-\textcolor{Azul}{\textbf{Red}} & Qué conexiones puede realizar el comando \\
+Descargar una dependencia & Necesita acceso de red \\
 \bottomrule
 \end{tabular}
 \end{minipage}};
-\cierre{Leer un archivo no implica tener permiso para modificarlo.}
-
-\note{Son dimensiones para razonar sobre controles, no cuatro ajustes universales idénticos en todos los productos. Ejecución no significa que sandbox\_mode configure por sí solo una lista de programas permitidos; influyen capacidades, permisos y políticas adicionales. En workspace-write, la lectura no queda automáticamente restringida a la carpeta del proyecto. Un prompt no establece por sí solo una barrera técnica. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refconfig.}
-
+\cierre{La misma tarea puede incluir acciones permitidas y acciones que requieren revisión.}
+\note{Ejemplo resuelto que se mantiene a lo largo del deck. Evaluar seis casos aquí significa ejecutar el evaluador determinista local, no llamar a una API ni a otro modelo. La escritura externa se bloquea bajo la política ilustrativa; puede solicitarse una excepción si las políticas lo permiten. La red desactivada se refiere a los comandos del sandbox, no a las conexiones del cliente con el servicio de Codex ni a toda herramienta. Una acción técnicamente permitida aún puede estar sujeta a otras reglas de aprobación. Fuentes oficiales, consulta del 6 de noviembre de 2026: \refseguridad\ y \url{https://learn.chatgpt.com/docs/permissions}.}
 \end{scope}
 \end{tikzpicture}
 \end{frame}
@@ -104,23 +69,17 @@
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
 \begin{scope}[shift={(current page.south west)}]
 \pie{01 / Fundamentos}
-\tit{Modos de sandbox}
-\bajada{Definen el alcance inicial de la ejecución de comandos.}
-\texto{20}{117}{90}{13}{\textcolor{Azul}{\texttt{read-only}}}
-\texto{121}{120}{179}{19}{Lectura bajo controles}
-\texto{121}{104}{179}{14}{Las escrituras quedan restringidas.}
-\regla{91}
-\texto{20}{81}{90}{13}{\textcolor{Azul}{\texttt{workspace-write}}}
-\texto{121}{84}{179}{19}{Escritura en el proyecto}
-\texto{121}{68}{179}{14}{También en otras ubicaciones autorizadas.}
-\regla{55}
-\texto{20}{45}{94}{13}{\textcolor{Violeta}{\texttt{danger-full-access}}}
-\texto{121}{48}{179}{19}{Sin las fronteras del sandbox}
-\texto{121}{32}{179}{14}{Persisten los permisos del sistema.}
-\texto{12}{15}{290}{10}{Solo lectura puede permitir ejecutar programas que respeten sus límites.}
-
-\note{La página principal resume read-only con una descripción simplificada de comandos y aprobación. La guía de seguridad aclara que los comandos permitidos pueden ejecutarse sin aprobación según la política. No interpretar read-only como ausencia de todo proceso. workspace-write también puede incluir temporales y proteger subrutas específicas. danger-full-access retira las restricciones del sandbox de Codex y no convierte al usuario en administrador. La aprobación es una decisión independiente. Los perfiles de permisos nuevos tienen mecanismos de selección propios; no mezclarlos con estos modos sin revisar compatibilidad. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refconfig.}
-
+\tit{En tu equipo, el sistema aplica los límites}
+\bajada{Codex solicita un comando. El programa se ejecuta bajo los controles locales.}
+\node[caja,minimum width=65mm] (codex) at (49,101) {Codex solicita\\crear el informe};
+\node[caja,minimum width=83mm] (python) at (153,101) {Python intenta\\escribir el archivo};
+\node[caja,minimum width=74mm] (sistema) at (270,101) {Sistema operativo\\permite o bloquea};
+\draw[flujo] (codex.east) -- (python.west);
+\draw[flujo] (python.east) -- (sistema.west);
+\texto{20}{73}{133}{14}{\textcolor{Azul}{\textbf{Ejecución local}}\\Los comandos corren en tu equipo.\\El sandbox puede usar controles del sistema, sin una máquina virtual.}
+\texto{174}{73}{130}{14}{\textcolor{Azul}{\textbf{Ejecución cloud}}\\Los comandos corren en un entorno remoto con sus propios permisos.}
+\cierre{Los permisos de navegador, búsqueda y conectores se controlan por separado.}
+\note{El diagrama explica ejecución local de comandos, no toda la arquitectura de Codex. El agente usa un modelo para decidir y una herramienta para iniciar Python, Git u otros programas. El sistema operativo impone las restricciones aplicables. En macOS se utilizan políticas Seatbelt; en Linux, mecanismos como bubblewrap y seccomp. Los detalles de plataforma permanecen en notas. Un sandbox no equivale siempre a una VM ni a un contenedor. Las ejecuciones cloud tienen su propio entorno. Navegador, búsqueda, MCP y conectores no heredan universalmente los controles del shell local. Fuentes oficiales consultadas el 6 de noviembre de 2026: \refseguridad\ y \url{https://learn.chatgpt.com/docs/permissions\#scope-and-enforcement}.}
 \end{scope}
 \end{tikzpicture}
 \end{frame}
@@ -129,30 +88,39 @@
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
 \begin{scope}[shift={(current page.south west)}]
 \pie{01 / Fundamentos}
-\tit{Acción permitida, revisión o bloqueo}
-\bajada{El alcance técnico y la política determinan cómo puede continuar una acción.}
+\tit{Al empezar, comprueba los permisos efectivos}
+\bajada{En un repositorio confiable, el inicio habitual permite trabajar dentro del proyecto.}
+\texto{20}{121}{133}{17}{\textcolor{Azul}{\textbf{Inicio habitual: Auto}}}
+\texto{20}{101}{136}{14}{\texttt{workspace-write}\\Escritura en el proyecto y temporales autorizados.}
+\texto{20}{73}{136}{14}{\texttt{on-request}\\Revisión cuando una acción necesita aprobación.}
+\texto{20}{45}{136}{13}{Red de comandos desactivada por defecto.}
+\draw[Linea,line width=.5pt] (163,43) -- (163,125);
+\texto{179}{121}{124}{17}{\textcolor{Azul}{\textbf{Compruébalo en CLI}}}
+\texto{179}{100}{124}{15}{\texttt{/status}\\Consultar el estado de la sesión.}
+\texto{179}{74}{124}{15}{\texttt{/permissions}\\Consultar o cambiar permisos.}
+\texto{179}{47}{124}{12}{Una carpeta sin confianza puede iniciar en solo lectura.}
+\cierre{La configuración, el cliente y las políticas pueden cambiar estos valores.}
+\note{Valores habituales, no afirmación sobre todas las sesiones. La documentación indica que al detectar control de versiones Codex recomienda Auto, con workspace-write y on-request; sin control de versiones recomienda read-only. Algunos entornos empiezan en read-only hasta confiar explícitamente en el directorio. La confianza no sustituye los controles técnicos. La configuración y los requisitos administrados determinan el resultado efectivo. /status y /permissions se presentan como comandos del CLI, no controles universales de todas las superficies. workspace-write no restringe automáticamente todas las lecturas al proyecto. Sus raíces conservan subrutas protegidas como .git, .codex, .agents y .aws. Fuentes oficiales, consulta del 6 de noviembre de 2026: \refseguridad\ y \url{https://learn.chatgpt.com/docs/agent-approvals-security\#defaults-and-recommendations}.}
+\end{scope}
+\end{tikzpicture}
+\end{frame}
 
-\node[caja,minimum width=51mm] (accion) at (40,87) {Acción};
-\node[caja,minimum width=63mm] (alcance) at (127,87) {Evaluar controles};
-\draw[flujo] (accion.east) -- (alcance.west);
-\node[caja,minimum width=71mm] (permitida) at (265,118) {Ejecutar};
-\node[caja,minimum width=71mm] (revision) at (265,84) {Revisar solicitud};
-\node[caja,minimum width=71mm] (bloqueo) at (265,50) {Bloquear / detener};
-\draw[flujo] (alcance.east) -- (171,87) |- (permitida.west);
-\draw[flujo] (171,87) |- (revision.west);
-\draw[flujo] (171,87) |- (bloqueo.west);
-\draw[flujo,draw=Azul] (revision.east) -- (308,84) -- (308,118) -- (permitida.east);
-\draw[flujo,draw=Violeta] (308,84) -- (308,50) -- (bloqueo.east);
-\texto{310}{108}{9}{8}{Sí}
-\texto{310}{68}{9}{8}{No}
-\texto{176}{128}{52}{10}{Dentro del alcance}
-\texto{176}{96}{52}{10}{Excepción elegible}
-\texto{176}{62}{52}{10}{Sin excepción disponible}
-\texto{20}{45}{145}{12}{La revisión puede aprobar o denegar.\\Una aprobación puede ampliar esa ejecución.}
-\cierre{Una acción fuera del alcance no siempre tiene una excepción disponible.}
-
-\note{Flujo conceptual, no algoritmo completo del cliente. Una acción permitida puede continuar salvo otras reglas aplicables. Si requiere aprobación y existe una excepción elegible, se revisa. Si no hay excepción disponible o se deniega, detener esa acción. La rama de revisión puede concluir en ejecución aprobada o bloqueo; el texto visible señala ambas salidas. Una aprobación puede cambiar el alcance de esa ejecución, por lo que debe distinguirse del permiso ordinario. Nunca significa no solicitar aprobación, no concederla automáticamente. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refauto.}
-
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+\tit{Exportar fuera del proyecto puede necesitar revisión}
+\bajada{El informe ya existe. Codex intenta copiarlo a una carpeta de entregas externa.}
+\node[caja,minimum width=78mm] (informe) at (57,105) {Informe dentro\\del proyecto};
+\node[caja,minimum width=79mm] (exportar) at (164,105) {Escritura fuera\\del alcance ordinario};
+\node[caja,minimum width=63mm] (solicitud) at (276,105) {Solicitud de\\excepción elegible};
+\draw[flujo] (informe.east) -- (exportar.west);
+\draw[flujo] (exportar.east) -- (solicitud.west);
+\texto{20}{75}{135}{14}{\textcolor{Azul}{\textbf{Sandbox}}\\Restringe la escritura externa con los permisos actuales.}
+\texto{177}{75}{128}{14}{\textcolor{Azul}{\textbf{Revisión}}\\Evalúa la acción, el destino y su autorización. Puede aprobar o denegar.}
+\texto{20}{43}{284}{12}{Si la política no permite solicitar una excepción, la acción se detiene.}
+\cierre{Aprobar una excepción puede ampliar esa ejecución; no concede acceso general.}
+\note{El ejemplo usa la misma exportación que la demo. No implica que cualquier bloqueo técnico siempre produzca una solicitud de aprobación: depende del cliente y de las políticas. Primero se explica el límite técnico y después la revisión. Una aprobación puede ampliar el alcance de esa ejecución. Una denegación exige detener esa acción o elegir una alternativa autorizada, no eludirla. Las reglas de comandos pueden añadir revisión y el revisor puede ser humano o automático. Fuentes oficiales, consulta del 6 de noviembre de 2026: \refseguridad\ y \refauto.}
 \end{scope}
 \end{tikzpicture}
 \end{frame}
@@ -175,7 +143,7 @@
 \draw[flujo] (201,92) |- (revisa.west);
 \texto{203}{131}{17}{11}{No}
 \texto{187}{66}{116}{11}{Sí: solicitud elegible, según la política}
-\texto{20}{49}{280}{12}{Ejemplo: escribir en \texttt{/ruta/entregas}, fuera del alcance actual.}
+\texto{20}{49}{280}{12}{Ejemplo: exportar el informe a una carpeta de entregas fuera del alcance actual.}
 \texto{20}{36}{280}{12}{La política debe permitir solicitar esa excepción. No se anticipa la decisión.}
 \cierre{Auto-review evalúa solicitudes de aprobación elegibles.}
 
@@ -293,7 +261,7 @@
 \texto{20}{66}{285}{13}{\texttt{writable\_roots = []}}
 \texto{20}{50}{285}{13}{\texttt{writable\_roots = [\textquotedbl/ruta/compartida\textquotedbl]}}
 \texto{20}{34}{285}{12}{Cambia solo la carpeta adicional. La política de aprobación y la red se conservan.}
-\texto{12}{16}{290}{10}{Ruta ficticia. Añadir escritura no define por sí solo todo el alcance de lectura.}
+\texto{12}{16}{290}{10}{Ruta ficticia. workspace-write no limita automáticamente todas las lecturas al proyecto.}
 
 \note{Comparar ambas listas manteniendo el resto de la base. La carpeta adicional no sustituye las raíces del proyecto. La lista vacía tampoco elimina ubicaciones temporales que permita la configuración efectiva. Las rutas protegidas pueden tener reglas propias. Para tareas en repositorios distintos, preferir proyectos o worktrees separados a ampliar de forma general el alcance. Una excepción puntual puede usar revisión acotada o reglas de comando compatibles. No se crea la ruta ficticia ni se cambian permisos. Fuente oficial, consulta del 5 de noviembre de 2026: \refconfig\ y \refprincipal.}
 
@@ -328,20 +296,22 @@
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
 \begin{scope}[shift={(current page.south west)}]
 \pie{03 / Configuración y alcance}
-\tit{El lugar de ejecución importa}
-\bajada{Una tarea puede combinar pasos locales y pasos en la nube.}
+\tit{Los modos cambian el alcance de los comandos}
+\bajada{Elegir un modo cambia los accesos; la política de aprobación se configura aparte.}
+\texto{20}{117}{90}{13}{\textcolor{Azul}{\texttt{read-only}}}
+\texto{121}{120}{179}{19}{Lectura bajo controles}
+\texto{121}{104}{179}{14}{Las escrituras quedan restringidas.}
+\regla{91}
+\texto{20}{81}{90}{13}{\textcolor{Azul}{\texttt{workspace-write}}}
+\texto{121}{84}{179}{19}{Escritura en el proyecto}
+\texto{121}{68}{179}{14}{También en otras ubicaciones autorizadas.}
+\regla{55}
+\texto{20}{45}{94}{13}{\textcolor{Violeta}{\texttt{danger-full-access}}}
+\texto{121}{48}{179}{19}{Sin las fronteras del sandbox}
+\texto{121}{32}{179}{14}{Persisten los permisos del sistema.}
+\texto{12}{15}{290}{10}{Solo lectura puede permitir ejecutar programas que respeten sus límites.}
 
-\texto{22}{114}{128}{17}{\textcolor{Azul}{\textbf{Computadora conectada}}}
-\texto{22}{91}{128}{15}{Un programa accede a\\archivos del equipo.}
-\texto{22}{66}{128}{13}{Se aplican los controles locales de ejecución.}
-\texto{173}{114}{130}{17}{\textcolor{Azul}{\textbf{Entorno cloud}}}
-\texto{173}{91}{129}{15}{Un navegador alojado\\accede a una web.}
-\texto{173}{66}{129}{13}{Se aplican los controles de ese entorno.}
-\draw[Linea,line width=.5pt] (158,51) -- (158,121);
-\texto{22}{42}{278}{12}{El orquestador coordina la tarea. Cada ejecución tiene su propio alcance.}
-\cierre{Un permiso o restricción local no se transfiere automáticamente a cloud.}
-
-\note{Ejemplo conceptual de Local computer access with Work Cloud. La conversación puede estar coordinada en cloud y utilizar ejecutores locales o remotos. Controles Global compatibles pueden gobernar al orquestador; la ejecución tiene requisitos propios. No aplicar automáticamente reglas del navegador desktop a uno alojado. Configurar y probar por separado cada entorno y cada vía de acceso. La selección de una superficie no demuestra que todas las herramientas actúen en un mismo lugar. Fuente oficial, consulta del 5 de noviembre de 2026: \refprincipal\ y \url{https://learn.chatgpt.com/docs/enterprise/managed-configuration}.}
+\note{La página principal resume read-only con una descripción simplificada de comandos y aprobación. La guía de seguridad aclara que los comandos permitidos pueden ejecutarse sin aprobación según la política. No interpretar read-only como ausencia de todo proceso. workspace-write también puede incluir temporales y proteger subrutas específicas. danger-full-access retira las restricciones del sandbox de Codex y no convierte al usuario en administrador. La aprobación es una decisión independiente. Los perfiles de permisos nuevos tienen mecanismos de selección propios; no mezclarlos con estos modos sin revisar compatibilidad. Fuente oficial, consulta del 5 de noviembre de 2026: \refseguridad\ y \refconfig.}
 
 \end{scope}
 \end{tikzpicture}

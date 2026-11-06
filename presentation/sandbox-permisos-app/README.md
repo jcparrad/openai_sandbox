@@ -1,5 +1,15 @@
 # Sandbox y permisos en Codex
 
+Revisión de claridad: 6 de noviembre de 2026. La apertura define el sandbox como
+límites técnicos de archivos y red para los comandos de Codex y sigue una tarea:
+evaluar seis casos, guardar un informe y exportarlo fuera del proyecto.
+
+Las primeras cinco láminas explican la definición, el ejemplo resuelto, la
+ejecución local/cloud, los permisos habituales al iniciar y la revisión de una
+excepción. Después se presentan Auto-review, configuración y modos. `/status`
+y `/permissions` se identifican como comandos del CLI. Los valores iniciales
+dependen del cliente, la confianza y las políticas efectivas.
+
 [Abrir la presentación](sandbox-permisos-app.pdf): diecisiete páginas, incluidas una lámina de demo y dos de apoyo. Explica responsabilidades, límites, modos, aprobaciones, configuración, red y ejecución local/cloud. El bloque Auto-review desarrolla activación, evaluación y resultados en tres páginas.
 
 La lámina 15 resume la [demo de dos revisores](../../examples/demo-sandbox/README.md): ambos recorridos completaron la tarea, con cuatro intervenciones humanas en el manual y cero en el automático, confirmado por el usuario. El [registro](../../results/comparacion-aprobaciones.md) distingue resultados verificados, observaciones de interfaz y datos no observables en el resumen. Es una pasada por modo, sin generalizar el ahorro.

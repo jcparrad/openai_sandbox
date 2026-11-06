@@ -2,6 +2,28 @@
 
 Investigación y aplicación: 5 de noviembre de 2026.
 
+## Revisión de claridad del 6 de noviembre de 2026
+
+Se conservan 17 páginas, dimensiones, tipografía y paleta. La apertura pasa de
+una explicación abstracta de procesos y recursos a una definición explícita y
+un ejemplo resuelto: guardar un informe dentro y fuera del proyecto.
+
+- Página 1: definición visible y ejemplo de escritura.
+- Página 2: tres acciones bajo una política ilustrativa declarada.
+- Página 3: comando concreto, controles del sistema operativo y distinción local/cloud.
+- Página 4: inicio habitual condicionado y consulta de permisos mediante CLI.
+- Página 5: exportación, restricción técnica y solicitud de excepción.
+- Página 6: mantiene la exportación como ejemplo al introducir Auto-review.
+- Página 11: hace visible que workspace-write no limita todas las lecturas al proyecto.
+- Página 13: comparación de modos trasladada después de los fundamentos.
+
+Las notas conservan los matices de plataforma y referencias. La secuencia aplica
+el uso de ejemplos resueltos para principiantes y títulos informativos, siguiendo
+las guías de [NSW](https://education.nsw.gov.au/about-us/education-data-and-research/cese/publications/practical-guides-for-educators-/cognitive-load-theory-in-practice)
+y [Beamer](https://github.com/josephwright/beamer/blob/main/doc/beamerug-guidelines.tex).
+La definición, los valores habituales y el alcance se contrastaron con la
+[documentación de seguridad de Codex](https://learn.chatgpt.com/docs/agent-approvals-security).
+
 ## Temas comparados
 
 | Tema | Qué aporta | Decisión para este material |

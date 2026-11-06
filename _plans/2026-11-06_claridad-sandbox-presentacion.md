@@ -45,5 +45,23 @@ Conservar las 17 diapositivas, el estilo y los resultados originales de la demo.
 
 ## Estado
 
-Plan preparado. Pendiente implementación y validación.
+Implementación y validación completadas el 6 de noviembre de 2026.
+
+- Commit inicial del plan: `e5db5d2`.
+- Apertura reescrita en las páginas 1 a 5; ejemplo unificado en la 6;
+  aclaración de lectura en la 11 y modos trasladados a la 13.
+- Guías de presentación y diseño actualizadas; README raíz corregido sobre
+  la publicación del remoto.
+- Compilación mediante el script existente: 17 páginas, sin desbordamientos,
+  caracteres faltantes ni referencias de control indefinidas según su comprobación.
+- Revisión visual individual de las 17 páginas renderizadas a PNG: texto,
+  tablas, diagramas, márgenes y numeración legibles, sin recortes ni solapamientos.
+- Resultados y limitaciones de la demo conservados. No se repitió el experimento
+  ni se cambiaron el sandbox o las configuraciones de ejemplo.
+- `git diff --check` sin errores. Este cierre se incluye en el commit final
+  de la actualización; su identificador queda en el historial de Git.
+
+La primera compilación encontró una caché de fuentes no escribible en el sandbox;
+se recompiló con escalación autorizada. Se corrigió el escape de anclas URL en
+notas LaTeX y la compilación final pasó todos los controles del script.
 Las reglas locales de `.codex/rules/` permanecen ignoradas y fuera de estos commits.

@@ -10,6 +10,14 @@ Son diez láminas de recorrido y dos de apoyo, en un único documento. El estilo
 conserva Fira Sans/Mono, formato 16:9 y la paleta de la presentación anterior de
 sandbox y permisos. [Fuentes, diseño y compilación](presentation/openai-y-sandbox/README.md).
 
+## Dónde retomar
+
+La explicación conceptual está terminada. Sigue mover OCI a la última lámina,
+aclarando que no se implementó ni probó, y después preparar las dos pruebas de
+Agents API: self-hosted en el computador y OpenAI-hosted. Las pruebas aún no se
+han ejecutado. El [punto de reanudación](PENDIENTES.md) registra el orden y el
+estado exacto para continuar el 18 de noviembre de 2026.
+
 ## Lectura y preparación
 
 - [Guía del presentador](docs/guia-presentador.md): mensaje, narración y referencias por lámina.

@@ -2,6 +2,12 @@
 
 Fecha: 17 de noviembre de 2026. Estado: implementación conceptual completada y verificada.
 
+**Próxima sesión, 18 de noviembre:** primero mover OCI a la última lámina con la
+nota «no implementado ni probado; extensión futura»; después comprobar viabilidad
+y preparar las pruebas self-hosted local y OpenAI-hosted. El ajuste de orden y
+ambas pruebas siguen pendientes. Seguir el [punto de reanudación](../PENDIENTES.md).
+Este cierre registra pendientes y publica los commits; no ejecuta esas tareas.
+
 ## Objetivo y entrega
 
 Dejar una sola presentación activa, clara y completa para explicar OpenAI y

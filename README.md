@@ -12,6 +12,8 @@ Ejemplo personal e independiente. No representa una política empresarial ni con
 
 Como complemento, la [guía de configuración general](examples/codex-auto-review/README.md) incluye recomendaciones sobre dependencias, Docker y APIs. Su [config.toml](examples/codex-auto-review/config.toml) no se activa por estar aquí y no es el perfil sin red de la demo.
 
+Para distinguir el uso en terminal del ejecutor de Agents API, consulta [Codex frente a exec-server](docs/codex-vs-exec-server/README.md): el mismo ejemplo en OCI, dos diagramas y una comparación con `codex exec`.
+
 ## Qué incluye
 
 ```text

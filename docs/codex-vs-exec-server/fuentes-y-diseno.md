@@ -28,7 +28,7 @@ Las figuras se redibujaron con TikZ y LuaLaTeX. Se consultó el [manual oficial:
 
 Aplicación al material:
 
-- Las dos figuras comparten tamaño, columnas, tipografía y posición de las herramientas. Así es más fácil localizar qué cambia.
+- Las tres figuras comparten tamaño, columnas, tipografía y posición de las herramientas. Así es más fácil localizar qué cambia.
 - El borde y fondo índigo identifican la coordinación, con texto explícito que conserva el significado en escala de grises.
 - Las flechas tienen espacio para sus etiquetas y no se cruzan. Son intercambios de mensajes; la nota sobre WebSocket aclara quién inicia la conexión.
 - Se usan títulos descriptivos, un caso concreto y una conclusión al pie de cada figura.
@@ -36,4 +36,11 @@ Aplicación al material:
 
 Referencias de implementación: [Nodes and Edges](https://tikz.dev/tikz-shapes), para anclas y bloques de texto; [Arrows](https://tikz.dev/tikz-arrows), para puntas uniformes con `arrows.meta`. Las figuras se dibujan a su tamaño final en LaTeX, sin reducir un dibujo sobredimensionado.
 
-Verificación: compilación de dos páginas sin desbordamientos ni caracteres faltantes y revisión visual de ambas imágenes exportadas. No se ejecutaron comandos de Codex ni recursos de OCI para crear estas ilustraciones.
+Verificación: compilación de tres páginas sin desbordamientos ni caracteres faltantes y revisión visual de las tres imágenes exportadas. No se ejecutaron comandos de Codex ni recursos de OCI para crear estas ilustraciones.
+
+## Adaptación a la presentación única
+
+Se cambió OCI por el computador local y se unificó el caso como CSV a informe.
+Se añadió OpenAI-hosted para separar modalidad y proveedor. Los tres diagramas
+comparten sus archivos TikZ con la presentación canónica, conservando Fira y su
+paleta. Las figuras explican funciones y ubicaciones; no registran pruebas API.

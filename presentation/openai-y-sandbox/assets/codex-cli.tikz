@@ -1,0 +1,27 @@
+\begin{tikzpicture}[x=1mm,y=1mm]
+\path[use as bounding box] (0,0) rectangle (296,103);
+\path[zona] (0,0) rectangle (66,103);
+\path[zona] (74,0) rectangle (174,103);
+\path[zona] (182,0) rectangle (296,103);
+\node[zonaTitulo] at (5,96) {TÚ};
+\node[zonaTitulo] at (79,96) {TU COMPUTADOR};
+\node[zonaTitulo] at (187,96) {OPENAI};
+\node[componente,text width=46mm,minimum height=21mm] (user) at (33,62)
+  {Escribes la tarea\\en la terminal};
+\node[coordina,text width=74mm,minimum height=21mm] (cli) at (124,62)
+  {\textbf{Codex CLI}\\Conversa y coordina};
+\node[componente,text width=86mm,minimum height=21mm] (model) at (239,62)
+  {\textbf{Modelo}\\Propone cómo continuar};
+\node[herramienta,text width=74mm,minimum height=21mm] (tools) at (124,19)
+  {\textbf{Python y archivos}\\CSV $\to$ informe};
+\draw[idaVuelta] (user.east) -- (cli.west)
+  node[rotulo,midway,above=2mm] {Tarea}
+  node[rotulo,midway,below=2mm] {Respuesta};
+\draw[idaVuelta] (cli.east) -- (model.west)
+  node[rotulo,midway,above=2mm] {Consulta}
+  node[rotulo,midway,below=2mm] {Respuesta};
+\draw[idaVuelta] (cli.south) -- (tools.north)
+  node[rotulo,midway,right=3mm,align=left] {Comandos /\\resultados};
+\node[rotulo,text width=50mm] at (33,19) {Trabajas directamente\\con Codex.};
+\node[rotulo,text width=93mm] at (239,19) {El modelo remoto no ejecuta\\Python en tu computador.};
+\end{tikzpicture}

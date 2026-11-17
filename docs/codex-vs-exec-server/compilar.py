@@ -1,4 +1,4 @@
-"""Compila los diagramas TikZ y exporta dos PNG para la guía Markdown."""
+"""Compila los diagramas TikZ y exporta tres PNG para la guía Markdown."""
 from pathlib import Path
 import re
 import subprocess
@@ -11,7 +11,7 @@ for directory in (BUILD, OUTPUT, ASSETS):
     directory.mkdir(parents=True, exist_ok=True)
 
 result = subprocess.run(
-    ["lualatex", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error",
+    ["lualatex", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "-no-shell-escape",
      f"-output-directory={BUILD}", str(ROOT / "diagramas.tex")],
     cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
 )
@@ -23,8 +23,8 @@ if re.search(r"Overfull|Missing character", log):
     raise SystemExit("Revisar desbordamientos o caracteres faltantes en build/diagramas.log")
 pdf = BUILD / "diagramas.pdf"
 info = subprocess.check_output(["pdfinfo", str(pdf)], text=True)
-if not re.search(r"Pages:\s+2\b", info):
-    raise SystemExit("Se esperaban exactamente dos páginas")
+if not re.search(r"Pages:\s+3\b", info):
+    raise SystemExit("Se esperaban exactamente tres páginas")
 (OUTPUT / "diagramas.pdf").write_bytes(pdf.read_bytes())
 subprocess.run(["pdftoppm", "-scale-to", "2000", "-png", str(pdf), str(ASSETS / "recorrido")], check=True)
-print("PDF de dos páginas y dos PNG generados. Revisar visualmente ambos PNG.")
+print("PDF de tres páginas y tres PNG generados. Revisar visualmente los tres PNG.")

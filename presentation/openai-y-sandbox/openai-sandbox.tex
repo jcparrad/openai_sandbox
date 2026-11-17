@@ -1,0 +1,292 @@
+\documentclass[aspectratio=169,12pt]{beamer}
+\usetheme[progressbar=none,sectionpage=none]{moloch}
+\geometry{paperwidth=320mm,paperheight=180mm}
+\usepackage[spanish]{babel}
+\shorthandoff{"}
+\usepackage{tikz,graphicx,listings,pgfpages}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\usepackage{estilo}
+\input{assets/diagramas-estilos.tex}
+\title{OpenAI y sandbox}
+\author{Knowledge Sharing}
+\hypersetup{pdftitle={OpenAI y sandbox: tu computador y OpenAI},pdfsubject={Conceptos y recorridos de Agents API; pruebas API pendientes},pdfauthor={Knowledge Sharing},colorlinks=true,urlcolor=Azul}
+\newcommand{\refarquitectura}{\enlace{https://developers.openai.com/api/docs/guides/agents-api/architecture}{OpenAI: arquitectura de Agents API}}
+\newcommand{\reflocal}{\enlace{https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted}{OpenAI: self-hosted}}
+\newcommand{\refalojado}{\enlace{https://developers.openai.com/api/docs/guides/agents-api/environments/openai-hosted}{OpenAI: OpenAI-hosted}}
+\newcommand{\refarchivos}{\enlace{https://developers.openai.com/api/docs/guides/agents-api/environments/files}{OpenAI: archivos y artefactos}}
+\newcommand{\refseguridad}{\enlace{https://learn.chatgpt.com/docs/agent-approvals-security}{OpenAI: sandbox y aprobaciones en Codex}}
+\begin{document}
+\begingroup
+\oscuro
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Una tarea concreta}
+
+\texto{16}{166}{205}{11}{\textcolor{Azul}{\textbf{DEL PEDIDO AL INFORME}}}
+\texto{16}{144}{167}{36}{\textbf{OpenAI y sandbox}}
+\texto{16}{117}{160}{23}{La misma tarea en tu computador y en OpenAI.}
+\texto{16}{75}{155}{17}{«Lee este CSV, resume los importes y guarda un informe».}
+\texto{192}{138}{110}{15}{\textcolor{Azul}{\textbf{Entrada}}\\\texttt{importes.csv}}
+\draw[flujo] (246,113) -- (246,97);
+\texto{192}{88}{110}{15}{\textcolor{Azul}{\textbf{Trabajo}}\\Ejecutar Python}
+\draw[flujo] (246,64) -- (246,48);
+\texto{192}{39}{110}{15}{\textcolor{Azul}{\textbf{Salida}}\\\texttt{resumen.json}}
+\texto{16}{30}{155}{12}{Una tarea para entender ubicación, responsabilidades y límites.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Abrir con el problema, sin enumerar productos. Usar importes.csv, seis filas sintéticas del ejemplo conservado. El informe incluye total y agrupaciones; también se puede producir una tabla CSV. La charla explica el recorrido de Agents API en dos modalidades. Las pruebas de ambas quedan para después: no se presenta una ejecución API como realizada. Pregunta inicial: «¿Dónde creen que se ejecuta Python?».
+\par\medskip Caso y referencia: examples/csv-informe/ del repositorio. Documentación técnica consultada el 17 de noviembre de 2026.
+}
+\end{frame}
+\endgroup
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+
+\tit{El sandbox delimita el trabajo que se ejecuta}
+\bajada{Un entorno de ejecución con controles sobre los recursos que puede usar.}
+\texto{20}{119}{132}{17}{\textcolor{Azul}{\textbf{Archivos}}\\Dónde puede leer o escribir.}
+\draw[Linea,line width=.4pt] (20,93) -- (153,93);
+\texto{20}{85}{132}{17}{\textcolor{Azul}{\textbf{Procesos y herramientas}}\\Qué puede ejecutar en ese entorno.}
+\draw[Linea,line width=.4pt] (20,59) -- (153,59);
+\texto{20}{51}{132}{17}{\textcolor{Azul}{\textbf{Red}}\\A qué puede conectarse.}
+\draw[limite] (185,55) rectangle (303,122);
+\node[caja,text width=89mm,minimum height=29mm] at (244,91) {Python lee el CSV\\y guarda el informe};
+\texto{185}{43}{115}{12}{Los controles dependen del producto y su configuración.}
+\cierre{El sandbox limita acciones; el informe también se verifica.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Explicar la finalidad: contener el alcance de acciones sobre recursos. Un prompt de buen comportamiento no configura una barrera técnica. Un directorio dedicado tampoco crea aislamiento por sí solo. Los límites concretos se verifican en cada entorno; no trasladar los ajustes de Codex automáticamente a cualquier servicio. Este dibujo es conceptual, sin prueba de una frontera. Pregunta: «¿Puede un cálculo incorrecto estar dentro de los permisos?» Sí.
+\refseguridad
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{01 / Fundamentos}
+
+\tit{Decidir, coordinar y ejecutar son tareas distintas}
+\bajada{La petición se convierte en acciones mediante varias piezas.}
+\node[caja,text width=58mm,minimum height=25mm] (app) at (45,99) {\textbf{Aplicación}\\Recibe la tarea};
+\node[caja,text width=58mm,minimum height=25mm] (h) at (122,99) {\textbf{Coordinación}\\Organiza los pasos};
+\node[caja,text width=58mm,minimum height=25mm] (m) at (199,99) {\textbf{Modelo}\\Propone acciones};
+\draw[idaVuelta] (app.east) -- (h.west);
+\draw[idaVuelta] (h.east) -- (m.west);
+\node[herramienta,text width=87mm,minimum height=23mm] (tool) at (122,49) {\textbf{Herramientas en el entorno}\\Ejecutan Python y operan con archivos};
+\draw[idaVuelta] (h.south) -- (tool.north) node[rotulo,midway,right=3mm] {Órdenes / resultados};
+\texto{244}{112}{60}{13}{En Agents API, OpenAI mantiene la coordinación del agente.}
+\texto{244}{67}{60}{13}{Tu aplicación puede ser un script. No exige una web.}
+\cierre{El modelo no es el lugar donde se ejecuta Python.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Usar «coordinación» antes de introducir harness. En Agents API, el servicio mantiene el ciclo del modelo y herramientas; el entorno aporta procesos y archivos. Una aplicación entrega tareas y recibe respuestas. Para seguir el ejemplo, basta imaginar un script que pide el informe. El ciclo puede repetir acciones hasta completar el trabajo. Las herramientas ejecutan lo solicitado, no sustituyen el razonamiento del modelo.
+\refarquitectura
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / Dos modalidades}
+
+\tit{Puedes aportar el entorno o pedirlo a OpenAI}
+\bajada{Son dos modalidades de entorno dentro de Agents API.}
+\texto{20}{122}{129}{23}{\textcolor{Azul}{\textbf{Self-hosted}}}
+\texto{20}{101}{129}{17}{Tú proporcionas el entorno.}
+\texto{20}{79}{129}{17}{Aquí: tu computador.\\Preparas herramientas y controles.}
+\texto{176}{122}{129}{23}{\textcolor{Azul}{\textbf{OpenAI-hosted}}}
+\texto{176}{101}{129}{17}{OpenAI proporciona el entorno.}
+\texto{176}{79}{129}{17}{Aquí: infraestructura de OpenAI.\\Defines archivos y configuración.}
+\draw[Linea,line width=.7pt] (160,49) -- (160,127);
+\texto{20}{42}{280}{15}{En ambos casos, Agents API coordina al agente y utiliza el modelo en OpenAI.}
+\cierre{Lo que cambia es quién proporciona el entorno de ejecución.}
+
+\end{scope}
+\end{tikzpicture}
+\note{La comparación se limita a estas dos modalidades con entorno. No es una clasificación universal de todos los productos OpenAI; Agents API también admite sesiones sin entorno para otros usos. No confundir modalidad con proveedor. Self-hosted puede implementarse en el computador del presentador. La siguiente lámina lo sigue paso a paso; todavía no introducir OCI.
+\refarquitectura\reflocal\refalojado
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / Self-hosted local}
+
+\tit{Self-hosted: el trabajo se ejecuta en tu computador}
+\bajada{Preparas el entorno, conectas el ejecutor y envías la tarea a la sesión.}
+\node[anchor=north west,inner sep=0pt] at (12,134) {\input{assets/self-hosted.tikz}};
+\cierre{El entorno es local; modelo y coordinación siguen en OpenAI.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Recorrido: preparar Python, datos y controles; crear una sesión self\_hosted; iniciar codex exec-server con su ID y URL; enviar la tarea; recoger el informe local y verificarlo; finalizar sesión y ejecutor. El ejecutor inicia una conexión saliente WebSocket. Por ella circulan órdenes y resultados: el diagrama representa mensajes, no conexiones entrantes. La clave restringida del ejecutor se separa de la clave de la aplicación. Los resultados vuelven al servicio; self-hosted no significa procesamiento completamente local.
+\reflocal
+\enlace{https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle}{OpenAI: ciclo de vida del entorno}
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / OpenAI-hosted}
+
+\tit{OpenAI-hosted: OpenAI prepara el entorno}
+\bajada{Proporcionas el CSV y la configuración; recuperas el informe al finalizar.}
+\node[anchor=north west,inner sep=0pt] at (12,134) {\input{assets/openai-hosted.tikz}};
+\cierre{Tu aplicación envía la tarea; OpenAI prepara el entorno.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Recorrido: solicitar openai\_hosted con archivos y dependencias; esperar el entorno conectado; enviar la tarea; recuperar la salida; cerrar la sesión. El entorno Linux incluye Python y Node.js. La red se configura como habilitada, deshabilitada o restringida; no asumir que coincide con los valores de Codex local. Para este caso se puede pedir que no use red durante el cálculo. Guardar en /workspace/outputs publica artefactos al terminar el turno; descargarlos con la API correspondiente. No borrar la sesión antes de conservar los resultados necesarios.
+\refalojado\refarchivos
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{02 / Comparación}
+
+\tit{La preparación cambia; la tarea y la verificación no}
+\bajada{Elige según cuánto necesitas controlar el entorno.}
+\node[anchor=north west,inner sep=0pt] at (20,122) {\begin{minipage}{280mm}
+\fontsize{15}{21}\selectfont\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}p{65mm}p{101mm}p{101mm}@{}}
+\toprule
+ & \textcolor{Azul}{\textbf{Self-hosted local}} & \textcolor{Azul}{\textbf{OpenAI-hosted}}\\\midrule
+Entorno & Tu computador y sus herramientas & Entorno preparado por OpenAI\\\midrule
+Tu preparación & Dependencias, controles y ejecutor & Archivos y configuración solicitada\\\midrule
+Recuperar el informe & Desde tu sistema de archivos & Descargar el artefacto publicado\\\midrule
+Al terminar & Detener ejecutor y cerrar sesión & Conservar archivos y eliminar sesión\\\bottomrule
+\end{tabular}
+\end{minipage}};
+\texto{20}{48}{278}{15}{La ubicación cambia la operación del entorno; no garantiza un cálculo más correcto.}
+\cierre{Mismo CSV y mismo criterio para comprobar el informe.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Esta tabla compara responsabilidades documentadas, no mediciones experimentales. Self-hosted permite elegir el entorno; hosted evita aprovisionarlo por cuenta propia. En ambos hay que gestionar la sesión y conservar los archivos. Las salidas locales se recogen con la infraestructura propia; las alojadas, mediante artefactos. Las sesiones y los entornos pueden tener ciclos de vida diferentes. Para las pruebas posteriores se conservarán datos, instrucción y referencia de verificación.
+\enlace{https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle}{OpenAI: gestión del ciclo de vida}
+\refarchivos
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Codex y revisión}
+
+\tit{Abrir Codex y conectar un ejecutor son usos distintos}
+\bajada{Ambos pueden usar tu computador; cambia cómo entregas la tarea.}
+\texto{20}{120}{131}{21}{\textcolor{Azul}{\textbf{\texttt{codex}}}}
+\texto{20}{98}{129}{16}{Conversas directamente en la terminal.}
+\node[caja,text width=120mm,minimum height=23mm] at (83,62) {Tú $\leftrightarrow$ Codex CLI $\leftrightarrow$ modelo};
+\texto{20}{43}{129}{13}{El cliente CLI coordina y usa herramientas locales.}
+\texto{176}{120}{130}{21}{\textcolor{Azul}{\textbf{\texttt{codex exec-server}}}}
+\texto{176}{98}{129}{16}{Tu aplicación entrega la tarea por API.}
+\node[caja,text width=120mm,minimum height=23mm] at (239,62) {Aplicación $\leftrightarrow$ Agents API $\leftrightarrow$ ejecutor};
+\texto{176}{43}{129}{13}{OpenAI coordina; el ejecutor usa herramientas locales.}
+\cierre{\texttt{codex exec} ejecuta Codex desde scripts; no es \texttt{exec-server}.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Esta distinción recupera la guía Markdown. No presentar el CLI como una modalidad de Agents API. Codex CLI abre una experiencia interactiva sobre el proyecto. codex exec permite automatizar una tarea sin la interfaz interactiva. exec-server conecta el entorno a una sesión remota de Agents API. No hace falta una VM para ninguno de los dos ejemplos locales: su viabilidad y controles se comprobarán antes de las pruebas. Pregunta: «¿Necesito exec-server solo para conversar con Codex en terminal?» No.
+\enlace{https://learn.chatgpt.com/docs/codex/cli}{OpenAI: Codex CLI}
+\enlace{https://learn.chatgpt.com/docs/non-interactive-mode}{OpenAI: codex exec}
+\reflocal
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{03 / Codex y revisión}
+
+\tit{Un límite de acceso y una aprobación no son lo mismo}
+\bajada{Ejemplo de Codex: informe dentro del proyecto y exportación a otra carpeta.}
+\texto{20}{121}{127}{20}{\textcolor{Azul}{\textbf{Sandbox}}}
+\texto{20}{98}{127}{17}{Delimita accesos de las herramientas.}
+\texto{20}{72}{127}{15}{Guardar dentro del alcance puede estar permitido. Fuera, puede requerir una excepción.}
+\texto{176}{121}{129}{20}{\textcolor{Azul}{\textbf{Revisión de una acción}}}
+\texto{176}{98}{129}{17}{Evalúa una solicitud elegible.}
+\texto{176}{72}{129}{15}{Puede revisarla una persona o Auto-review, según la configuración efectiva.}
+\draw[Linea,line width=.7pt] (160,49) -- (160,127);
+\texto{20}{41}{280}{13}{Política ilustrativa: escritura limitada al proyecto; solo hay excepción si la política la permite.}
+\cierre{Alojamiento, límites y revisión son decisiones diferentes.}
+
+\end{scope}
+\end{tikzpicture}
+\note{No prometer que toda escritura externa se pueda aprobar. Puede estar bloqueada sin excepción. Auto-review deriva solicitudes elegibles a otro agente revisor; no amplía por sí mismo las raíces del sandbox. Una acción ya autorizada puede no producir solicitud. La decisión usa el contexto y la política; no garantiza detección infalible de errores. No trasladar la configuración del ejemplo a las dos modalidades sin comprobar sus requisitos. Esta lámina explica el concepto, no aplica configuración.
+\refseguridad
+\enlace{https://learn.chatgpt.com/docs/sandboxing/auto-review}{OpenAI: Auto-review}
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{04 / Conclusión}
+
+\tit{Elige el entorno y comprueba el resultado}
+\bajada{Una misma tarea; dos formas de proporcionar el lugar donde se ejecuta.}
+\texto{20}{119}{127}{20}{\textcolor{Azul}{\textbf{Tu computador}}}
+\texto{20}{95}{127}{16}{Aportas el entorno y conectas el ejecutor.}
+\texto{176}{119}{129}{20}{\textcolor{Azul}{\textbf{OpenAI}}}
+\texto{176}{95}{129}{16}{Solicitas el entorno y entregas los archivos.}
+\regla{75}
+\texto{20}{64}{281}{17}{En ambos: recuperar el informe, abrirlo y contrastarlo con una referencia.}
+\texto{20}{39}{281}{12}{Estado: explicación documental de Agents API. Las pruebas de ambas modalidades quedan pendientes.}
+\cierre{Ubicación y permisos explican dónde puede actuar; verificar explica si lo hizo bien.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Cerrar volviendo a la petición inicial. El CSV de referencia tiene total esperado 700, promedio 116,6667 y tres grupos; son datos de referencia local, no una medición nueva de Agents API. Pedir al público que identifique dónde corre Python en cada modalidad y qué revisarían antes de usar el informe. Las futuras pruebas se incorporarán a esta misma presentación. Los dos apoyos siguientes permiten ampliar sobre OCI o comentar evidencia histórica sin abrir otra charla.
+\par\medskip Material autocontenido: examples/csv-informe/ y docs/guia-presentador.md. Recorridos documentados, sin consumo API en esta preparación.
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{Apoyo A / Extensión}
+
+\tit{Self-hosted también puede estar en OCI}
+\bajada{Self-hosted indica quién aporta el entorno; OCI indica dónde lo aloja.}
+\node[caja,text width=87mm,minimum height=24mm] (self) at (66,91) {\textbf{Self-hosted}\\Tú aportas el entorno};
+\node[caja,text width=105mm,minimum height=22mm] (local) at (240,112) {Tu computador};
+\node[caja,text width=105mm,minimum height=22mm] (oci) at (240,64) {OCI};
+\draw[flujo] (self.east) -- ++(18,0) |- (local.west);
+\draw[flujo] (self.east) -- ++(18,0) |- (oci.west);
+\texto{20}{45}{280}{15}{El Cookbook muestra una aplicación que crea, conecta, utiliza y elimina el entorno en OCI.}
+\texto{20}{25}{280}{12}{\href{https://github.com/openai/openai-cookbook/tree/main/examples/agents_api/sandboxes/oci/application_managed}{\textcolor{Azul}{OpenAI Cookbook: OCI / application-managed}}\quad Extensión documental; no ejecutada.}
+
+\end{scope}
+\end{tikzpicture}
+\note{OCI no es la alternativa a self-hosted: es una ubicación posible dentro de esa modalidad. En el ejemplo del Cookbook un script crea una sesión y un OCI GenAI Sandbox, inicia el ejecutor, transforma brief.txt en plan.md y trata de limpiar recursos. Esta extensión no es necesaria para comprender ni probar las modalidades básicas. Los requisitos y disponibilidad deberán comprobarse cuando se retome el experimento. No se despliegan recursos en esta entrega.
+\enlace{https://github.com/openai/openai-cookbook/tree/main/examples/agents_api/sandboxes/oci/application_managed}{OpenAI Cookbook: ejemplo OCI application-managed}
+}
+\end{frame}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.south west)}]
+\pie{Apoyo B / Evidencia previa}
+
+\tit{Lo que sí observamos antes: una tarea, dos revisores}
+\bajada{Prueba histórica con Codex CLI del 5 de noviembre de 2026.}
+\texto{20}{122}{125}{14}{\textcolor{Azul}{\textbf{REVISIÓN MANUAL}}}
+\texto{20}{103}{45}{52}{\textbf{4}}
+\texto{67}{92}{83}{16}{intervenciones\\humanas}
+\texto{20}{65}{125}{13}{Tres inspecciones y una exportación.}
+\texto{176}{122}{125}{14}{\textcolor{Azul}{\textbf{AUTO-REVIEW}}}
+\texto{176}{103}{45}{52}{\textbf{0}}
+\texto{223}{92}{83}{16}{intervenciones\\humanas}
+\texto{176}{65}{125}{13}{Confirmado por el usuario.}
+\regla{52}
+\texto{20}{43}{280}{14}{Ambos informes: seis casos verificados y copia exportada idéntica.}
+\texto{20}{25}{280}{11}{Una pasada por modo. No mide seguridad general, ahorro de tiempo ni Agents API.}
+
+\end{scope}
+\end{tikzpicture}
+\note{Evidencia local revisada en results/comparacion-aprobaciones.md. La carga es un evaluador sintético determinista, distinto del CSV de importes. Tres intervenciones manuales fueron inspecciones y una la exportación. En automático el usuario confirmó ausencia de intervenciones; el resumen no expone una decisión individual del revisor. No atribuir las cuatro a una frontera ni inferir cuatro decisiones automáticas. No se midieron ahorro de tiempo, coste o seguridad general. Se conserva esta evidencia como apoyo, sin mezclarla con las futuras pruebas API.
+\par\medskip Registro: results/comparacion-aprobaciones.md. Informes sintéticos manual y automático conservados en results/.
+}
+\end{frame}
+\end{document}

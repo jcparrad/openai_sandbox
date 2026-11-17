@@ -1,6 +1,12 @@
 # Diagnóstico: consolidar una sola presentación de OpenAI y sandbox
 
-Fecha: 17 de noviembre de 2026. Estado: diagnóstico y recomendaciones; sin implementación.
+Fecha: 17 de noviembre de 2026. Estado: diagnóstico histórico; consolidación conceptual completada según el plan vigente.
+
+**Uso de este documento:** conservar como inventario y diagnóstico. La secuencia
+de ejecución vigente está en [el plan de presentación única](2026-11-17-explicacion-openai-sandbox.md):
+primero consolidar la explicación conceptual y después ejecutar las pruebas de
+Agents API. Las recomendaciones siguientes que anteponen esas pruebas a la
+presentación no rigen el alcance actual.
 
 ## Recomendación principal
 
@@ -191,10 +197,15 @@ archivos. No borrar ahora el trabajo previo ni reemplazar ZIP o commits.
 6. Actualizar README, guía y enlaces para que apunten al material canónico.
 7. Resolver el archivo histórico de versiones anteriores, sin mantenerlas como
    presentaciones activas ni regenerar copias de distribución manualmente.
+8. Después de las verificaciones, revisar el diff y crear un commit final con
+   los entregables y la documentación, excluyendo credenciales y temporales.
+   Informar el identificador y las verificaciones realizadas. Este commit está
+   autorizado por el usuario y no requiere nueva confirmación. Un push posterior
+   no forma parte de este cierre.
 
 El plan `2026-11-17-explicacion-openai-sandbox.md` ya contiene las dos modalidades
 acordadas. Al implementar, precisar que «conservar material complementario» no
-significa mantener otra presentación activa. Este diagnóstico no ejecuta el plan.
+significa mantener otra presentación activa. El cierre y las verificaciones de la consolidación están registrados en el plan vigente.
 
 ## Comprobación final de la consolidación
 
@@ -205,6 +216,7 @@ significa mantener otra presentación activa. Este diagnóstico no ejecuta el pl
 - Diagramas coherentes con el computador local y OpenAI, sin heredar OCI por error.
 - Compilación y enlaces verificados, páginas renderizadas revisadas y ensayo medido.
 - Sin nuevas copias activas divergentes, borrados ni publicación implícita.
+- Implementación y documentación guardadas en un commit final informado al usuario.
 
 ## Archivos que sustentan el diagnóstico
 

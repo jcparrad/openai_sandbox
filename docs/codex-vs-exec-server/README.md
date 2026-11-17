@@ -1,102 +1,102 @@
-# `codex` y `codex exec-server`: ¿qué cambia?
+# Entorno, coordinación y ejecutor: una tarea paso a paso
 
-Guía conceptual · Lectura: 5 minutos · Revisada el 17 de noviembre de 2026
+Guía conceptual · Revisada el 17 de noviembre de 2026
 
-**Con `codex` abres una sesión de trabajo en la terminal. Con `codex exec-server` conectas una máquina a una sesión de Agents API para que ejecute allí sus herramientas.**
+**El modelo, el programa que coordina al agente y el entorno que ejecuta Python
+son piezas distintas.** Sigamos una tarea: leer `importes.csv` y generar un informe.
+Las figuras explican recorridos; no documentan ejecuciones nuevas.
 
-Para entenderlo, sigue una misma tarea en los dos casos: **leer `ventas.csv` y generar `grafico.png` en una máquina de OCI**. Es un ejemplo ilustrativo; todavía no se ha ejecutado este experimento.
-
-## 1. Primero, distingue tres funciones
+## 1. Primero: quién hace cada parte
 
 | Función | Qué hace | Ejemplo |
 |---|---|---|
-| Recibir la tarea | Permite pedir un resultado. | «Genera un gráfico de ventas». |
-| Coordinar el trabajo | Consulta al modelo, solicita herramientas y usa sus resultados para continuar. | Leer el CSV → escribir Python → ejecutarlo → comprobar el gráfico. |
-| Ejecutar herramientas | Realiza las operaciones en una máquina. | Ejecutar Python y guardar el PNG. |
+| Aplicación | Recibe y entrega una tarea. Puede ser un script. | «Resume este CSV y guarda el informe». |
+| Coordinación del agente | Consulta al modelo y usa herramientas para continuar. | Leer, calcular y comprobar. |
+| Modelo | Propone cómo resolver la tarea. | Escribir el código necesario. |
+| Herramientas en el entorno | Ejecutan las operaciones sobre procesos y archivos. | Python lee el CSV y guarda JSON. |
 
-La documentación llama **harness** al programa que coordina ese ciclo. El **modelo** propone los pasos; el **entorno** aporta los procesos y archivos. Son piezas diferentes. [Arquitectura de Agents API](https://developers.openai.com/api/docs/guides/agents-api/architecture).
+En Agents API, OpenAI mantiene la coordinación. El entorno de ejecución puede
+ser propio o proporcionado por OpenAI. [Arquitectura](https://developers.openai.com/api/docs/guides/agents-api/architecture).
 
-## 2. Recorrido A: abres `codex` en la terminal
+## 2. Self-hosted en tu computador
 
-Entras por SSH a tu máquina de OCI, abres el directorio de trabajo y ejecutas:
+Tú preparas el entorno y sus controles. La aplicación crea una sesión y el
+programa `codex exec-server` la conecta al computador. Después se entrega la tarea.
 
-```bash
-codex
-```
+![Self-hosted local: la aplicación entrega la tarea a Agents API; OpenAI coordina y el ejecutor conectado usa Python y archivos del computador.](assets/recorrido-2.png)
 
-Escribes: «Lee ventas.csv y genera grafico.png».
+El ejecutor inicia la conexión saliente WebSocket. Las flechas muestran mensajes
+que van y vienen, no que OpenAI abra una conexión entrante. El modelo sigue en
+OpenAI y recibe resultados de herramientas; self-hosted no significa que todo
+el procesamiento permanezca local. [Guía self-hosted](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted).
 
-![Recorrido A: tú entregas la tarea en la terminal; Codex CLI coordina desde OCI, consulta al modelo en OpenAI y ejecuta Python en OCI.](assets/recorrido-1.png)
+Al completar la tarea se recoge y verifica el informe local, se cierra la sesión
+y se detiene el ejecutor. Una carpeta de trabajo por sí sola no demuestra aislamiento.
 
-**Qué mirar:** Codex CLI está en tu máquina y conduce la sesión, consultando al modelo remoto. El gráfico se genera en OCI. Esta ubicación es la elegida para el ejemplo; también puedes abrir Codex en tu portátil. [Codex CLI](https://learn.chatgpt.com/docs/codex/cli).
+## 3. OpenAI-hosted
 
-## 3. Recorrido B: conectas la máquina con `codex exec-server`
+Tu aplicación solicita el entorno y aporta el archivo y la configuración. OpenAI
+lo prepara y conecta; la aplicación envía la tarea cuando esté listo.
 
-Tu aplicación crea una sesión de Agents API. En OCI arrancas el ejecutor, con la autenticación preparada y los datos de conexión que devuelve la API:
+![OpenAI-hosted: la aplicación conserva su función; OpenAI proporciona el entorno que ejecuta Python y coordina al agente.](assets/recorrido-3.png)
 
-```bash
-codex exec-server \
-  --remote "<URL devuelta por la sesión>" \
-  --environment-id "<ID del entorno de la sesión>"
-```
+El informe publicado desde `/workspace/outputs` se descarga como artefacto.
+Se conserva y verifica antes de eliminar la sesión. La aplicación no necesita
+preparar un computador ejecutor propio. [Guía alojada](https://developers.openai.com/api/docs/guides/agents-api/environments/openai-hosted),
+[archivos y artefactos](https://developers.openai.com/api/docs/guides/agents-api/environments/files).
 
-Este fragmento muestra el papel del comando; la preparación completa está en la [guía self-hosted](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted).
+## 4. ¿Y abrir Codex en la terminal?
 
-![Recorrido B: tu aplicación envía la tarea a Agents API en OpenAI; el servicio coordina y el ejecutor en OCI ejecuta Python y devuelve resultados.](assets/recorrido-2.png)
+Ejecutar `codex` permite conversar directamente y trabajar sobre el proyecto.
+El cliente coordina el trabajo, consultando al modelo, y utiliza herramientas locales.
 
-**Qué mirar:** la coordinación está en OpenAI. El ejecutor recibe solicitudes de herramientas y devuelve resultados. Tu aplicación entrega la tarea y gestiona el entorno; no necesita reenviar cada comando. [Arquitectura self-hosted](https://developers.openai.com/api/docs/guides/agents-api/architecture#connect-your-own-environment).
+![Codex CLI: tú conversas con el cliente en tu computador; el cliente consulta al modelo remoto y usa Python local.](assets/recorrido-1.png)
 
-Las flechas muestran el flujo de mensajes. **La conexión de red la inicia el ejecutor desde OCI hacia OpenAI**, mediante WebSocket; los mensajes circulan en ambos sentidos. [Conexión del ejecutor](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted#how-the-connection-works).
+En cambio, con `exec-server` la tarea llega a Agents API desde tu aplicación.
+El proceso local actúa como ejecutor de las herramientas solicitadas por esa sesión.
+[Codex CLI](https://learn.chatgpt.com/docs/codex/cli).
 
-## 4. La diferencia, una al lado de la otra
-
-| Pregunta | `codex` | `codex exec-server` con Agents API |
-|---|---|---|
-| ¿Dónde entregas la tarea? | En la conversación de la terminal. | En tu aplicación, que llama a la API. |
-| ¿Dónde se coordina el ciclo? | En el cliente CLI, que consulta al modelo. | En el servicio de OpenAI. |
-| ¿Qué hace el proceso en OCI? | Lleva la sesión y ejecuta herramientas. | Ejecuta las herramientas solicitadas por la sesión remota. |
-| ¿Dónde se genera el gráfico del ejemplo? | En OCI. | En OCI. |
-
-La tabla compara los dos recorridos dibujados. El resultado puede ser el mismo: cambia cómo se organiza el trabajo.
-
-## 5. Una tercera opción: `codex exec`
-
-También puedes ejecutar una tarea desde un script:
-
-```bash
-codex exec "Lee ventas.csv y genera grafico.png"
-```
-
-Es Codex en modo no interactivo. Sirve para automatización y CI. **Poder lanzar una tarea por código no obliga a usar `exec-server`.** [Modo no interactivo](https://learn.chatgpt.com/docs/non-interactive-mode).
-
-| Si necesitas… | Opción que encaja |
+| Necesidad | Comando o modalidad |
 |---|---|
-| Conversar y trabajar desde la terminal. | `codex` |
-| Lanzar una tarea desde un script o pipeline. | `codex exec` |
-| Que una sesión de Agents API utilice tu máquina como entorno. | `codex exec-server` |
+| Conversar y trabajar en la terminal. | `codex` |
+| Lanzar una tarea de Codex desde un script. | `codex exec` |
+| Conectar tu entorno a una sesión de Agents API. | `codex exec-server` en self-hosted |
+| Pedir a OpenAI el entorno de ejecución de Agents API. | OpenAI-hosted |
 
-## 6. Lo que conviene recordar
+`codex exec` es el modo no interactivo del cliente, no otro nombre del ejecutor.
+[Modo no interactivo](https://learn.chatgpt.com/docs/non-interactive-mode).
 
-**Dónde está la máquina** y **dónde se coordina el agente** son decisiones distintas. En ambos dibujos, Python corre en OCI y el modelo está en OpenAI.
+## 5. Límites y revisión
 
-El entorno self-hosted requiere que prepares sus dependencias y controles de aislamiento. Los resultados de herramientas vuelven al servicio; tener los archivos en OCI no significa que todo el procesamiento ocurra allí. [Responsabilidades del entorno](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted#prepare-your-environment).
+El sandbox aplica controles a la ejecución. Una aprobación revisa una acción
+que requiere autorización adicional. Son conceptos diferentes del lugar donde
+está el entorno. Leer [permisos de Codex](permisos-codex.md) para ejemplos.
 
-### Comprueba si ya se entiende
+Para saber si el informe es correcto, se abren sus archivos y se contrastan con
+la referencia. El éxito del cálculo no prueba aislamiento completo.
 
-1. ¿Necesitas `exec-server` para usar Codex por SSH en una VM? **No; puedes abrir `codex` allí.**
-2. ¿Arrancar `exec-server` basta para pedir el gráfico? **Necesitas además una sesión conectada y enviarle la tarea mediante la API.**
-3. ¿Qué comparten los dos ejemplos? **La máquina y las herramientas que producen el gráfico.**
+## 6. Dónde encaja OCI
 
-Consulta las [fuentes y decisiones de diseño](fuentes-y-diseno.md). El [experimento con OCI](../../PENDIENTES.md) sigue pendiente.
+OCI es otra infraestructura posible para self-hosted. El ejemplo
+[application-managed del Cookbook](https://github.com/openai/openai-cookbook/tree/main/examples/agents_api/sandboxes/oci/application_managed)
+explica cómo una aplicación gestiona el ciclo del entorno. Se conserva como
+extensión en [pendientes](../../PENDIENTES.md); no hace falta para entender la
+comparación entre tu computador y OpenAI.
 
-## Diagramas para leer y reutilizar
+## Figuras y reproducción
 
-Los diagramas están integrados como imágenes PNG; pueden verse sin soporte de Mermaid. También están disponibles en un [PDF vectorial de dos páginas](output/pdf/diagramas.pdf) y como [fuente editable en LaTeX/TikZ](diagramas.tex).
+[PDF de las tres figuras](output/pdf/diagramas.pdf) · [Fuente LaTeX](diagramas.tex) ·
+[Fuentes y decisiones de diseño](fuentes-y-diseno.md).
 
-Para regenerar el PDF y las imágenes, desde esta carpeta:
+Los diagramas comparten fuentes TikZ con la [presentación única](../../presentation/openai-y-sandbox/README.md).
+Las imágenes PNG permiten leer esta guía sin soporte Mermaid.
+
+Desde la raíz:
 
 ```bash
-python3 compilar.py
+python3 docs/codex-vs-exec-server/compilar.py
 ```
 
-Requisitos: LuaLaTeX, PGF/TikZ, standalone, fontspec, TeX Gyre Heros y Poppler (`pdfinfo` y `pdftoppm`). La compilación comprueba que haya dos páginas y que no se informen desbordamientos ni caracteres faltantes. Los archivos intermedios quedan en `build/`, ignorado por Git.
+Requiere LuaLaTeX, TikZ, standalone, fontspec, Fira Sans/Mono y Poppler.
+La compilación verifica tres páginas y caracteres/desbordamientos; los
+intermedios quedan en `build/`, ignorado por Git. Revisar visualmente al editar.

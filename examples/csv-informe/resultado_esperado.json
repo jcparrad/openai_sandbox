@@ -1,0 +1,10 @@
+{
+  "filas": 6,
+  "total": 700,
+  "promedio": 116.6667,
+  "por_area": {
+    "Operaciones": 200,
+    "Soporte": 280,
+    "Ventas": 220
+  }
+}

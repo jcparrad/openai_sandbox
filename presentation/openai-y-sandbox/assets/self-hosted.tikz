@@ -1,0 +1,26 @@
+\begin{tikzpicture}[x=1mm,y=1mm]
+\path[use as bounding box] (0,0) rectangle (296,103);
+\path[zona] (0,0) rectangle (66,103);
+\path[zona] (74,0) rectangle (174,103);
+\path[zona] (182,0) rectangle (296,103);
+\node[zonaTitulo] at (5,96) {TU APLICACIÓN};
+\node[zonaTitulo] at (79,96) {TU COMPUTADOR};
+\node[zonaTitulo] at (187,96) {OPENAI};
+\node[componente,text width=46mm,minimum height=21mm] (app) at (33,62)
+  {Recibe la tarea\\y llama a la API};
+\node[componente,text width=74mm,minimum height=21mm] (exec) at (124,62)
+  {\textbf{\texttt{codex exec-server}}\\Ejecutor conectado};
+\node[coordina,text width=86mm,minimum height=21mm] (api) at (239,62)
+  {\textbf{Agents API}\\Coordina y consulta al modelo};
+\node[herramienta,text width=74mm,minimum height=21mm] (tools) at (124,19)
+  {\textbf{Python y archivos}\\CSV $\to$ informe};
+\draw[idaVuelta] (app.north) -- (33,82) -- (239,82) -- (api.north);
+\node[rotulo,fill=Papel] at (133,83) {Tarea / progreso y respuesta};
+\draw[idaVuelta] (exec.east) -- (api.west)
+  node[rotulo,midway,above=2mm] {Órdenes}
+  node[rotulo,midway,below=2mm] {Resultados};
+\draw[idaVuelta] (exec.south) -- (tools.north)
+  node[rotulo,midway,right=3mm,align=left] {Comandos /\\resultados};
+\node[rotulo,text width=50mm] at (33,19) {Puede ser un script;\\no exige una web.};
+\node[rotulo,text width=93mm] at (239,19) {La coordinación y el modelo\\permanecen en OpenAI.};
+\end{tikzpicture}

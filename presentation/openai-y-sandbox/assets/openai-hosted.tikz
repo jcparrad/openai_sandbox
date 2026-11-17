@@ -1,0 +1,24 @@
+\begin{tikzpicture}[x=1mm,y=1mm]
+\path[use as bounding box] (0,0) rectangle (296,103);
+\path[zona] (0,0) rectangle (66,103);
+\path[zona] (74,0) rectangle (296,103);
+\node[zonaTitulo] at (5,96) {TU APLICACIÓN};
+\node[zonaTitulo] at (79,96) {OPENAI / ENTORNO DE EJECUCIÓN Y AGENTE};
+\node[componente,text width=46mm,minimum height=21mm] (app) at (33,62)
+  {Entrega la tarea\\y el CSV};
+\node[componente,text width=74mm,minimum height=21mm] (env) at (124,62)
+  {\textbf{Entorno alojado}\\OpenAI lo prepara y conecta};
+\node[coordina,text width=86mm,minimum height=21mm] (api) at (239,62)
+  {\textbf{Agents API}\\Coordina y consulta al modelo};
+\node[herramienta,text width=74mm,minimum height=21mm] (tools) at (124,19)
+  {\textbf{Python y archivos}\\CSV $\to$ informe};
+\draw[idaVuelta] (app.north) -- (33,82) -- (239,82) -- (api.north);
+\node[rotulo,fill=Papel] at (133,83) {Tarea / progreso y respuesta};
+\draw[idaVuelta] (env.east) -- (api.west)
+  node[rotulo,midway,above=2mm] {Órdenes}
+  node[rotulo,midway,below=2mm] {Resultados};
+\draw[idaVuelta] (env.south) -- (tools.north)
+  node[rotulo,midway,right=3mm,align=left] {Comandos /\\resultados};
+\node[rotulo,text width=50mm] at (33,19) {Descarga el informe\\publicado como artefacto.};
+\node[rotulo,text width=93mm] at (239,19) {Cambia quién proporciona\\el entorno de ejecución.};
+\end{tikzpicture}

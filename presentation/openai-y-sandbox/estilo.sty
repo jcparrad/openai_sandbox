@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{estilo-sandbox}[2026/11/05 Estilo editorial para la presentacion]
+\ProvidesPackage{estilo}[2026/11/17 Estilo de la presentacion unica]
 \RequirePackage{fontspec,microtype,booktabs,array}
 \RequirePackage{tcolorbox}
 \tcbuselibrary{listings,skins}
@@ -31,7 +31,7 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{headline}{}
 \setbeamertemplate{footline}{}
-\setbeameroption{hide notes}
+
 \tikzset{every node/.style={text=Tinta,inner sep=0pt,font=\sffamily},
  flujo/.style={-{Stealth[length=2mm,width=1.4mm]},draw=Tinta!75!Papel,line width=.8pt},
  limite/.style={draw=Azul!65!Papel,line width=.8pt,dash pattern=on 2.5pt off 2.5pt},
@@ -52,3 +52,17 @@
  coltitle=Lavanda,colbacktitle=Noche,title={ejemplo-config.toml},listing only,listing engine=listings,
  listing options={language=TOML,basicstyle=\ttfamily\color{Nieve}\fontsize{13}{20}\selectfont,
  keywordstyle={\color{Lavanda}},stringstyle=\color{Nieve},commentstyle=\color{Nieve!55!Noche}}}}
+
+\newcommand{\fuente}[1]{\texto{12}{16}{288}{8}{\textcolor{Tinta!58!Papel}{#1}}}
+\newcommand{\enlace}[2]{\par\smallskip{\fontsize{11}{15}\selectfont\href{#1}{#2}}}
+\setbeamertemplate{note page}{%
+  \vspace*{8mm}\hspace*{12mm}%
+  \begin{minipage}[t]{288mm}\color{Noche}\sffamily\fontsize{16}{22}\selectfont
+  \textbf{Notas del presentador}\hfill\insertframenumber\par\medskip
+  \insertnote
+  \end{minipage}}
+\ifdefined\ConNotas
+  \setbeameroption{show notes on second screen=right}
+\else
+  \setbeameroption{hide notes}
+\fi

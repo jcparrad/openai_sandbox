@@ -29,7 +29,7 @@ Las figuras se redibujaron con TikZ y LuaLaTeX. Se consultó el [manual oficial:
 Aplicación al material:
 
 - Las tres figuras comparten tamaño, columnas, tipografía y posición de las herramientas. Así es más fácil localizar qué cambia.
-- El borde y fondo índigo identifican la coordinación, con texto explícito que conserva el significado en escala de grises.
+- En la comparación de modalidades, el borde y fondo índigo destacan el sandbox: se mueve del computador a OpenAI. En la figura separada de CLI se identifica la coordinación. Cada figura explica su mensaje con texto.
 - Las flechas tienen espacio para sus etiquetas y no se cruzan. Son intercambios de mensajes; la nota sobre WebSocket aclara quién inicia la conexión.
 - Se usan títulos descriptivos, un caso concreto y una conclusión al pie de cada figura.
 - El PDF conserva los elementos vectoriales y el Markdown incorpora PNG de 2000 píxeles de ancho para visores comunes.
@@ -44,3 +44,7 @@ Se cambió OCI por el computador local y se unificó el caso como CSV a informe.
 Se añadió OpenAI-hosted para separar modalidad y proveedor. Los tres diagramas
 comparten sus archivos TikZ con la presentación canónica, conservando Fira y su
 paleta. Las figuras explican funciones y ubicaciones; no registran pruebas API.
+
+Revisión de claridad de las modalidades: dos columnas fijas («Tu computador» y
+«OpenAI»), aplicación y agente en la misma posición, y el sandbox con Python
+resaltado en la columna donde realmente se ejecuta.

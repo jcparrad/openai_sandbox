@@ -50,7 +50,7 @@ cumplir una cifra heredada. Duración orientativa: 20–25 minutos más pregunta
 | 1 | Qué queremos hacer: pasar de un CSV a un informe comprobable. | Entrada → ejecución → informe. |
 | 2 | Qué es el sandbox, para qué sirve y qué límites puede imponer. | Entorno y recursos sujetos a permisos. |
 | 3 | Modelo, coordinación, herramientas y entorno cumplen funciones distintas. | Piezas conectadas con etiquetas sencillas. |
-| 4 | En Agents API el entorno puede ser self-hosted u OpenAI-hosted. | Dos ubicaciones; OCI aún no aparece. |
+| 4 | Tres recorridos: Codex CLI y los dos escenarios de Agents API. | Mapa inicial con coordinación y lugar de ejecución. |
 | 5 | Self-hosted local: cómo una aplicación conecta el computador y entrega una tarea. | Aplicación → Agents API ↔ ejecutor y Python local. |
 | 6 | OpenAI-hosted: cómo se prepara el entorno, se entrega el CSV y se recupera el informe. | Mismas piezas, con el entorno en OpenAI. |
 | 7 | Qué prepara y administra cada parte en ambas modalidades. | Comparación de responsabilidades, archivos y preparación. |
@@ -318,3 +318,15 @@ Completado el 17 de noviembre de 2026.
 
 Permanecen para después: acceso y compatibilidad experimental, presupuesto,
 pruebas self-hosted/OpenAI-hosted y mediciones. OCI continúa como extensión.
+
+### Ajuste de claridad tras revisar las láminas
+
+- Se añadió el mapa inicial de tres recorridos: Codex CLI, Agents API self-hosted
+  local y Agents API OpenAI-hosted. Solo los dos últimos son modalidades de entorno
+  de Agents API. En hosted el usuario no inicia exec-server.
+- Las láminas 5 y 6 usan dos columnas fijas (computador / OpenAI) y destacan el
+  sandbox con Python. Ese bloque cambia de columna; aplicación y agente conservan
+  su posición. Se muestra explícitamente dónde está el sandbox.
+- Guía, figuras compartidas, notas y fuentes de diseño actualizadas. Ambas
+  exportaciones siguen con doce páginas y compilan sin desbordamientos ni
+  caracteres faltantes. Se revisaron las láminas y notas afectadas.

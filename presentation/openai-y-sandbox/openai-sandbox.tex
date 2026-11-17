@@ -93,21 +93,25 @@
 \begin{scope}[shift={(current page.south west)}]
 \pie{02 / Dos modalidades}
 
-\tit{Puedes aportar el entorno o pedirlo a OpenAI}
-\bajada{Son dos modalidades de entorno dentro de Agents API.}
-\texto{20}{122}{129}{23}{\textcolor{Azul}{\textbf{Self-hosted}}}
-\texto{20}{101}{129}{17}{Tú proporcionas el entorno.}
-\texto{20}{79}{129}{17}{Aquí: tu computador.\\Preparas herramientas y controles.}
-\texto{176}{122}{129}{23}{\textcolor{Azul}{\textbf{OpenAI-hosted}}}
-\texto{176}{101}{129}{17}{OpenAI proporciona el entorno.}
-\texto{176}{79}{129}{17}{Aquí: infraestructura de OpenAI.\\Defines archivos y configuración.}
-\draw[Linea,line width=.7pt] (160,49) -- (160,127);
-\texto{20}{42}{280}{15}{En ambos casos, Agents API coordina al agente y utiliza el modelo en OpenAI.}
-\cierre{Lo que cambia es quién proporciona el entorno de ejecución.}
+\tit{Tres recorridos; dos utilizan Agents API}
+\bajada{Codex en terminal y las dos modalidades de entorno de Agents API.}
+\texto{20}{126}{80}{10}{\textcolor{Azul}{\textbf{CLIENTE EN TU EQUIPO}}}
+\texto{120}{126}{182}{10}{\textcolor{Azul}{\textbf{AGENTS API / OPENAI COORDINA}}}
+\texto{20}{113}{82}{20}{\textbf{1. Codex}}
+\texto{120}{113}{82}{20}{\textbf{2. Self-hosted}}
+\texto{220}{113}{82}{20}{\textbf{3. OpenAI-hosted}}
+\draw[Linea,line width=.7pt] (110,49) -- (110,129);
+\draw[Linea,line width=.7pt] (210,49) -- (210,117);
+\texto{20}{88}{80}{15}{Abres \texttt{codex}.\\[3mm]El cliente coordina.\\[3mm]Python corre en tu equipo.}
+\texto{120}{88}{80}{15}{Conectas \texttt{exec-server}.\\[3mm]OpenAI coordina.\\[3mm]Python corre en tu equipo.}
+\texto{220}{88}{80}{15}{Solicitas el entorno.\\[3mm]OpenAI coordina.\\[3mm]Python corre en OpenAI.}
+\texto{20}{40}{282}{12}{En OpenAI-hosted no arrancas el ejecutor: OpenAI prepara y conecta el entorno.}
+\cierre{Self-hosted y OpenAI-hosted son las dos modalidades de entorno de Agents API.}
 
 \end{scope}
 \end{tikzpicture}
-\note{La comparación se limita a estas dos modalidades con entorno. No es una clasificación universal de todos los productos OpenAI; Agents API también admite sesiones sin entorno para otros usos. No confundir modalidad con proveedor. Self-hosted puede implementarse en el computador del presentador. La siguiente lámina lo sigue paso a paso; todavía no introducir OCI.
+\note{Presentar primero los tres recorridos para separar uso del cliente e integración API. En el primero se abre Codex en terminal. En los otros dos se utiliza Agents API: un entorno propio conectado mediante codex exec-server o un entorno que proporciona OpenAI. En el alojado no se inicia manualmente ese ejecutor. El modelo sigue siendo remoto en estos ejemplos. La clasificación describe tres recorridos de esta charla, no todas las posibilidades del producto. Las siguientes dos láminas comparan únicamente las modalidades API. OCI se reserva como posible infraestructura self-hosted al final.
+\enlace{https://learn.chatgpt.com/docs/codex/cli}{OpenAI: Codex CLI}
 \refarquitectura\reflocal\refalojado
 }
 \end{frame}
@@ -116,10 +120,10 @@
 \begin{scope}[shift={(current page.south west)}]
 \pie{02 / Self-hosted local}
 
-\tit{Self-hosted: el trabajo se ejecuta en tu computador}
-\bajada{Preparas el entorno, conectas el ejecutor y envías la tarea a la sesión.}
+\tit{Self-hosted: el sandbox está en tu computador}
+\bajada{Tú preparas el sandbox y lo conectas con \texttt{codex exec-server}.}
 \node[anchor=north west,inner sep=0pt] at (12,134) {\input{assets/self-hosted.tikz}};
-\cierre{El entorno es local; modelo y coordinación siguen en OpenAI.}
+\cierre{El sandbox está en tu computador; el modelo sigue en OpenAI.}
 
 \end{scope}
 \end{tikzpicture}
@@ -133,10 +137,10 @@
 \begin{scope}[shift={(current page.south west)}]
 \pie{02 / OpenAI-hosted}
 
-\tit{OpenAI-hosted: OpenAI prepara el entorno}
-\bajada{Proporcionas el CSV y la configuración; recuperas el informe al finalizar.}
+\tit{OpenAI-hosted: el sandbox está en OpenAI}
+\bajada{OpenAI prepara el sandbox. Python procesa allí los archivos que envías.}
 \node[anchor=north west,inner sep=0pt] at (12,134) {\input{assets/openai-hosted.tikz}};
-\cierre{Tu aplicación envía la tarea; OpenAI prepara el entorno.}
+\cierre{El sandbox y el modelo están en OpenAI; tu aplicación entrega la tarea.}
 
 \end{scope}
 \end{tikzpicture}

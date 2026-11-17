@@ -1,24 +1,22 @@
 \begin{tikzpicture}[x=1mm,y=1mm]
 \path[use as bounding box] (0,0) rectangle (296,103);
-\path[zona] (0,0) rectangle (66,103);
-\path[zona] (74,0) rectangle (296,103);
-\node[zonaTitulo] at (5,96) {TU APLICACIÓN};
-\node[zonaTitulo] at (79,96) {OPENAI / ENTORNO DE EJECUCIÓN Y AGENTE};
-\node[componente,text width=46mm,minimum height=21mm] (app) at (33,62)
-  {Entrega la tarea\\y el CSV};
-\node[componente,text width=74mm,minimum height=21mm] (env) at (124,62)
-  {\textbf{Entorno alojado}\\OpenAI lo prepara y conecta};
-\node[coordina,text width=86mm,minimum height=21mm] (api) at (239,62)
-  {\textbf{Agents API}\\Coordina y consulta al modelo};
-\node[herramienta,text width=74mm,minimum height=21mm] (tools) at (124,19)
-  {\textbf{Python y archivos}\\CSV $\to$ informe};
-\draw[idaVuelta] (app.north) -- (33,82) -- (239,82) -- (api.north);
-\node[rotulo,fill=Papel] at (133,83) {Tarea / progreso y respuesta};
-\draw[idaVuelta] (env.east) -- (api.west)
-  node[rotulo,midway,above=2mm] {Órdenes}
-  node[rotulo,midway,below=2mm] {Resultados};
-\draw[idaVuelta] (env.south) -- (tools.north)
-  node[rotulo,midway,right=3mm,align=left] {Comandos /\\resultados};
-\node[rotulo,text width=50mm] at (33,19) {Descarga el informe\\publicado como artefacto.};
-\node[rotulo,text width=93mm] at (239,19) {Cambia quién proporciona\\el entorno de ejecución.};
+\path[zona] (0,0) rectangle (140,103);
+\path[zona] (156,0) rectangle (296,103);
+\node[zonaTitulo,font=\bfseries\fontsize{12}{15}\selectfont] at (6,96) {TU COMPUTADOR};
+\node[zonaTitulo,font=\bfseries\fontsize{12}{15}\selectfont] at (162,96) {OPENAI};
+\node[componente,text width=96mm,minimum height=19mm] (app) at (70,76)
+  {\textbf{Tu aplicación}\\Envía la tarea y el CSV};
+\node[componente,text width=96mm,minimum height=19mm] (api) at (226,76)
+  {\textbf{Agente de Agents API}\\Modelo y coordinación};
+\draw[idaVuelta] (app.east) -- (api.west)
+  node[rotulo,midway,above=2mm] {Tarea}
+  node[rotulo,midway,below=2mm] {Respuesta};
+\node[componente,draw=Azul,fill=Azul!12!Papel,line width=1.4pt,
+ text width=110mm,minimum height=28mm] (sandbox) at (226,23)
+ {\textcolor{Azul}{\textbf{SANDBOX EN OPENAI}}\\[1mm]
+  \textbf{Aquí se ejecuta Python}\\CSV $\to$ informe};
+\draw[idaVuelta] (api.south) -- (sandbox.north)
+  node[rotulo,midway,left=3mm,align=right] {Instrucciones /\\resultados};
+\node[rotulo,text width=113mm,font=\fontsize{12}{16}\selectfont] at (70,23)
+ {Tu aplicación entrega el CSV\\y descarga el informe.};
 \end{tikzpicture}

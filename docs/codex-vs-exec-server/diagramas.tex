@@ -24,6 +24,6 @@
 \end{tikzpicture}}
 \begin{document}
 \figura{Codex CLI: trabajas directamente en la terminal}{El cliente coordina la sesión y utiliza las herramientas locales.}{codex-cli}{El modelo está en OpenAI; el trabajo de Python se ejecuta en tu computador.}
-\figura{Agents API: self-hosted en tu computador}{La aplicación crea la sesión y conecta el ejecutor al entorno local.}{self-hosted}{El ejecutor inicia la conexión saliente; órdenes y resultados van y vienen.}
-\figura{Agents API: OpenAI-hosted}{OpenAI proporciona el entorno; tu aplicación entrega archivos y tarea.}{openai-hosted}{Se conserva la función de la aplicación; cambia quién proporciona el entorno.}
+\figura{Self-hosted: el sandbox está en tu computador}{Tú preparas el sandbox y lo conectas con \texttt{codex exec-server}.}{self-hosted}{El sandbox está en tu computador; el modelo sigue en OpenAI.}
+\figura{OpenAI-hosted: el sandbox está en OpenAI}{OpenAI prepara el sandbox; Python procesa allí los archivos que envías.}{openai-hosted}{El sandbox y el modelo están en OpenAI; tu aplicación entrega la tarea.}
 \end{document}

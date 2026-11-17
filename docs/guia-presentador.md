@@ -13,9 +13,9 @@ Duración orientativa: 20–25 minutos más preguntas. No es una duración medid
 | 1 | «Queremos un informe real a partir de un CSV». Mostrar entrada, trabajo y salida antes de nombres de productos. | Caso de la presentación general. |
 | 2 | «El sandbox acota las acciones sobre recursos». Distinguir archivos, procesos y red; los límites dependen del entorno. | Introducción breve y fundamentos de Codex. |
 | 3 | «Recibir, coordinar y ejecutar son funciones distintas». Seguir una petición entre las piezas; definir harness solo después. | General y guía Markdown. |
-| 4 | «El entorno lo proporcionas tú o lo proporciona OpenAI». Es la comparación dentro de Agents API. | Modalidades documentadas. |
-| 5 | «Conectamos el computador como lugar de ejecución». Leer la arquitectura siguiendo tarea, órdenes y resultados. | Guía de exec-server adaptada a local. |
-| 6 | «Pedimos a OpenAI que proporcione el entorno». Mismas posiciones, distinta agrupación del entorno. | Guía OpenAI-hosted. |
+| 4 | «Hay tres recorridos: Codex en terminal y dos con Agents API». Solo los dos últimos se distinguen por self-hosted/OpenAI-hosted; en el alojado no arrancas exec-server. | Modalidades documentadas. |
+| 5 | «El sandbox está en tu computador». Señalar el bloque resaltado a la izquierda; el modelo continúa a la derecha. | Guía de exec-server adaptada a local. |
+| 6 | «El sandbox está en OpenAI». Señalar que el bloque de Python se mueve a la derecha; la aplicación permanece en el computador. | Guía OpenAI-hosted. |
 | 7 | «La tarea se conserva; cambia la preparación». Comparar responsabilidades y recuperación de archivos. | Síntesis de arquitectura y archivos. |
 | 8 | «Conversar en Codex es distinto de conectar un ejecutor». Una aplicación puede ser un script. | Guía CLI/exec/exec-server. |
 | 9 | «Un límite y una revisión hacen trabajos distintos». Ejemplo ilustrativo de exportación; no prometer excepciones. | Presentación de Codex. |

@@ -6,6 +6,15 @@ Guía conceptual · Revisada el 17 de noviembre de 2026
 son piezas distintas.** Sigamos una tarea: leer `importes.csv` y generar un informe.
 Las figuras explican recorridos; no documentan ejecuciones nuevas.
 
+## Mapa inicial: tres recorridos
+
+1. **Codex en terminal:** abres `codex`; el cliente coordina y Python corre localmente.
+2. **Agents API + self-hosted local:** conectas `codex exec-server`; OpenAI coordina y Python corre localmente.
+3. **Agents API + OpenAI-hosted:** OpenAI coordina y proporciona el sandbox; Python corre allí. Tú no arrancas el ejecutor.
+
+Los dos últimos son las modalidades de entorno que compara la charla. No son
+tres tipos de alojamiento: el primero es otra forma de utilizar al agente.
+
 ## 1. Primero: quién hace cada parte
 
 | Función | Qué hace | Ejemplo |
@@ -18,8 +27,9 @@ Las figuras explican recorridos; no documentan ejecuciones nuevas.
 En Agents API, OpenAI mantiene la coordinación. El entorno de ejecución puede
 ser propio o proporcionado por OpenAI. [Arquitectura](https://developers.openai.com/api/docs/guides/agents-api/architecture).
 
-## 2. Self-hosted en tu computador
+## 2. Self-hosted: el sandbox está en tu computador
 
+**El bloque resaltado es donde se ejecuta Python: en tu computador.**
 Tú preparas el entorno y sus controles. La aplicación crea una sesión y el
 programa `codex exec-server` la conecta al computador. Después se entrega la tarea.
 
@@ -33,8 +43,9 @@ el procesamiento permanezca local. [Guía self-hosted](https://developers.openai
 Al completar la tarea se recoge y verifica el informe local, se cierra la sesión
 y se detiene el ejecutor. Una carpeta de trabajo por sí sola no demuestra aislamiento.
 
-## 3. OpenAI-hosted
+## 3. OpenAI-hosted: el sandbox está en OpenAI
 
+**El bloque resaltado se mueve a OpenAI: allí está el sandbox y se ejecuta Python.**
 Tu aplicación solicita el entorno y aporta el archivo y la configuración. OpenAI
 lo prepara y conecta; la aplicación envía la tarea cuando esté listo.
 

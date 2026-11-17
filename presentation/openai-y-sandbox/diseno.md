@@ -36,8 +36,9 @@ actual no concatena sus páginas ni depende de ese repositorio para compilar.
 - [booktabs](https://ctan.org/pkg/booktabs): tablas editables con pocas columnas y reglas horizontales.
 - [latexmk](https://ctan.org/pkg/latexmk): recompilación automática, sin actualizar la distribución como requisito.
 
-Los recorridos self-hosted y alojado mantienen posiciones y tamaños de las piezas.
-El fondo agrupa ubicaciones; el énfasis índigo señala la coordinación. El texto
+Los recorridos self-hosted y alojado mantienen fijos el computador, OpenAI, la
+aplicación y el agente. El sandbox con Python se mueve de columna: el énfasis
+índigo señala el lugar donde se ejecuta el trabajo. El texto
 explica los roles, de modo que el significado no depende solo del color. Las
 flechas dobles son intercambios de mensajes. Las notas aclaran por separado el
 inicio de conexión saliente del ejecutor local.
@@ -50,3 +51,12 @@ no son reglas universales de las herramientas citadas.
 Compilar las dos exportaciones y revisar sus renderizados antes de entregar. La
 lectura conceptual no sustituye un ensayo con audiencia ni una prueba de servicio.
 Los controles de calidad y el resultado final se registran en el plan de trabajo.
+
+Revisión de claridad: las láminas 5 y 6 muestran explícitamente «sandbox en tu
+computador» y «sandbox en OpenAI». La diferencia principal se expresa por posición,
+texto y énfasis, sin exigir deducirla del fondo de un grupo.
+
+La lámina 4 introduce tres recorridos: Codex CLI y los dos escenarios de Agents
+API. Así se distingue el uso del cliente de las modalidades de entorno antes de
+mostrar los dibujos de self-hosted y OpenAI-hosted. En el alojado se aclara que
+el usuario no inicia exec-server.
